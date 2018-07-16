@@ -18,11 +18,11 @@ func (s *Suite) TestDiscoveryService() {
 	s.setPath(s.Discovery)
 	log.Println()
 	log.Println("== Testing Discovery Service")
-	s.BasicTests()
-	s.DiscoveryOutput()
+	s.basicTests()
+	s.testDiscoveryOutput()
 }
 
-func (s *Suite) DiscoveryOutput() {
+func (s *Suite) testDiscoveryOutput() {
 	log.Println("== Test D1: Test successful response")
 	if s.Verbose {
 		log.Println("++ This test will send a correct authentication parameter and will check to see if a proper discovery resource is returned")

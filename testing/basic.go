@@ -12,7 +12,7 @@ import (
 	"github.com/gologme/log"
 )
 
-func (s *Suite) BasicTests() {
+func (s *Suite) basicTests() {
 	// Test no authentication
 	// Test failed authentication
 	// Test successful authentication

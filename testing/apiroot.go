@@ -18,11 +18,11 @@ func (s *Suite) TestAPIRootService() {
 	s.setPath(s.APIRoot)
 	log.Println()
 	log.Println("== Testing API Root Service")
-	s.BasicTests()
-	s.APIRootOutput()
+	s.basicTests()
+	s.testAPIRootOutput()
 }
 
-func (s *Suite) APIRootOutput() {
+func (s *Suite) testAPIRootOutput() {
 	log.Println("== Test A1: Test successful response")
 	if s.Verbose {
 		log.Println("++ This test will send a correct authentication parameter and will check to see if a proper API root resource is returned")
