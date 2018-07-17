@@ -6,7 +6,7 @@ testlab contains a series of testing tools to automatically test a TAXII 2.x
 implementation. It was written in the Go (Golang) programming language.
 
 ## Test Setup ##
-The three test tools list below all require that an existing API Root be 
+The three test tools listed below all require that an existing API Root be 
 pre-configured on the TAXII Server. This API root will be used for all tests in
 this suite. The name and path of this API root will need to be fed in to the 
 test tools via a command line parameter. For example:
