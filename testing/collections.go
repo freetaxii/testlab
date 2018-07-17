@@ -13,21 +13,22 @@ import (
 	"github.com/freetaxii/libstix2/resources"
 )
 
-func (s *Suite) TestAPIRootService() {
-	s.setPath(s.APIRoot)
+func (s *Suite) TestCollectionsService() {
+	path := s.APIRoot + "/collections"
+	s.setPath(path)
 	s.Logger.Println()
-	s.Logger.Println("== Testing API Root Service")
+	s.Logger.Println("== Testing Collections Service")
 	s.basicTests()
-	s.testAPIRootOutput()
+	s.testCollectionsOutput()
 }
 
-func (s *Suite) testAPIRootOutput() {
-	s.Logger.Println("== Test A1: Test successful response")
+func (s *Suite) testCollectionsOutput() {
+	s.Logger.Println("== Test C1: Test successful response")
 	if s.Verbose {
-		s.Logger.Println("++ This test will send a correct authentication parameter and will check to see if a proper API root resource is returned")
+		s.Logger.Println("++ This test will send a correct authentication parameter and will check to see if a proper collections resource is returned")
 	}
 
-	var o resources.APIRoot
+	var o resources.Collections
 	media := s.TAXIIMediaType + s.MediaVersion
 	s.setAccept(media)
 	s.Req.SetBasicAuth(s.Username, s.Password)

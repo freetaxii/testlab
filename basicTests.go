@@ -38,15 +38,22 @@ var (
 )
 
 func main() {
+	// --------------------------------------------------
+	// Setup logger
+	// --------------------------------------------------
+	logger := log.New(os.Stderr, "", log.LstdFlags)
+	//logger.EnableLevel("debug")
+
 	wb := testing.NewWorkbench()
 	processCommandLineFlags(wb)
 
-	log.Println("------------------------------------------------------------")
-	log.Println("Starting FreeTAXII Testing Suite...")
-	log.Println("------------------------------------------------------------")
-	s := testing.NewSuite(wb)
+	logger.Println("------------------------------------------------------------")
+	logger.Println("Starting FreeTAXII Testing Suite...")
+	logger.Println("------------------------------------------------------------")
+	s := testing.NewSuite(logger, wb)
 	s.TestDiscoveryService()
 	s.TestAPIRootService()
+	s.TestCollectionsService()
 }
 
 // --------------------------------------------------

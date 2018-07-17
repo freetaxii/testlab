@@ -11,21 +11,20 @@ import (
 	"io/ioutil"
 
 	"github.com/freetaxii/libstix2/resources"
-	"github.com/gologme/log"
 )
 
 func (s *Suite) TestDiscoveryService() {
 	s.setPath(s.Discovery)
-	log.Println()
-	log.Println("== Testing Discovery Service")
+	s.Logger.Println()
+	s.Logger.Println("== Testing Discovery Service")
 	s.basicTests()
 	s.testDiscoveryOutput()
 }
 
 func (s *Suite) testDiscoveryOutput() {
-	log.Println("== Test D1: Test successful response")
+	s.Logger.Println("== Test D1: Test successful response")
 	if s.Verbose {
-		log.Println("++ This test will send a correct authentication parameter and will check to see if a proper discovery resource is returned")
+		s.Logger.Println("++ This test will send a correct authentication parameter and will check to see if a proper discovery resource is returned")
 	}
 
 	var o resources.Discovery
@@ -45,7 +44,7 @@ func (s *Suite) testDiscoveryOutput() {
 
 	var data []byte
 	data, _ = json.MarshalIndent(o, "", "    ")
-	log.Println("\n", string(data))
+	s.Logger.Println("\n", string(data))
 
 	s.printSummary()
 	s.reset()

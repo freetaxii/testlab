@@ -10,6 +10,7 @@ import (
 	"crypto/tls"
 	"net"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/gologme/log"
@@ -31,6 +32,7 @@ func NewWorkbench() *Workbench {
 }
 
 type Suite struct {
+	Logger         *log.Logger
 	Req            *http.Request
 	Client         *http.Client
 	ProblemsFound  int
@@ -40,9 +42,16 @@ type Suite struct {
 	Workbench
 }
 
-func NewSuite(wb *Workbench) *Suite {
+func NewSuite(logger *log.Logger, wb *Workbench) *Suite {
 	var s Suite
 	var err error
+
+	if logger == nil {
+		s.Logger = log.New(os.Stderr, "", log.LstdFlags)
+	} else {
+		s.Logger = logger
+	}
+
 	netTransport := &http.Transport{
 		Dial: (&net.Dialer{
 			Timeout: 5 * time.Second,
@@ -124,16 +133,28 @@ against one more more possible expected response codes.
 func (s *Suite) checkResponseCode(actual int, expected ...int) int {
 	if len(expected) >= 2 {
 		if expected[0] != actual && expected[1] != actual {
-			log.Printf("ERROR: Expected HTTP response code %d. Got %d\n", expected[0], actual)
+			s.Logger.Printf("ERROR: Expected HTTP response code %d. Got %d\n", expected[0], actual)
 			return 1
 		}
 	} else if len(expected) == 1 {
 		if expected[0] != actual {
-			log.Printf("ERROR: Expected HTTP response code %d. Got %d\n", expected[0], actual)
+			s.Logger.Printf("ERROR: Expected HTTP response code %d. Got %d\n", expected[0], actual)
 			return 1
 		}
 	} else {
-		log.Fatalln("FATAL: Missing expected HTTP code")
+		s.Logger.Fatalln("FATAL: Missing expected HTTP code")
+	}
+	return 0
+}
+
+/*
+checkContentType - This function will verify the actual HTTP response
+content-type is correct.
+*/
+func (s *Suite) checkContentType(actual string, expected string) int {
+	if expected != actual {
+		s.Logger.Printf("ERROR: Expected HTTP content type %s. Got %s\n", expected, actual)
+		return 1
 	}
 	return 0
 }
@@ -144,7 +165,7 @@ function calls. This prevents us from having to put the if statement everywhere.
 */
 func (s *Suite) testError(err error) {
 	if err != nil {
-		log.Fatalln(err)
+		s.Logger.Fatalln(err)
 	}
 }
 
@@ -154,10 +175,10 @@ found in a specific test.
 */
 func (s *Suite) printSummary() {
 	if s.ProblemsFound == 0 {
-		//log.Println("SUCCESS: This test completed successfully")
+		//s.Logger.Println("SUCCESS: This test completed successfully")
 	} else if s.ProblemsFound == 1 {
-		log.Println("ERROR:", s.ProblemsFound, "problem found in this test")
+		s.Logger.Println("ERROR:", s.ProblemsFound, "problem found in this test")
 	} else if s.ProblemsFound > 1 {
-		log.Println("ERROR:", s.ProblemsFound, "problems found in this test")
+		s.Logger.Println("ERROR:", s.ProblemsFound, "problems found in this test")
 	}
 }
