@@ -5,6 +5,37 @@
 testlab contains a series of testing tools to automatically test a TAXII 2.x 
 implementation. It was written in the Go (Golang) programming language.
 
+## Test Setup ##
+The three test tools list below all require that an existing API Root be 
+pre-configured on the TAXII Server. This API root will be used for all tests in
+this suite. The name and path of this API root will need to be fed in to the 
+test tools via a command line parameter. For example:
+
+```
+https://somesite.com/api1/
+./basicTests -a api1
+
+https://somesite.com/taxii/api1/
+./basicTests -a taxii/api1
+```
+
+This API Root should be configured in one of two ways with the collections 
+listed below:
+
+
+### Configuration 1: Read Only Implementation ###
+```
+Read-only  Test Collection ID 22f763c1-e478-4765-8635-e4c32db665ea
+```
+
+### Configuration 2: Read and Write Implementation ###
+```
+Read-only  Test Collection ID 22f763c1-e478-4765-8635-e4c32db665ea
+Write-only Test Collection ID 4f7327e2-f5b4-4269-b6e0-3564d174ce69
+Read-Write Test Collection ID 8c49f14d-8ea3-4f03-ab28-19dbca973dde
+```
+
+
 ## Test Tools ##
 
 ### basicTests.go ###
@@ -52,6 +83,7 @@ Basic Tests - These are run on every endpoint
 - [x] Missing Trailing Slash
 - [x] Invalid Media Types for Accept
 - [x] Valid Media Types for Accept
+- [x] Valid Media Type for Content-type
 
 Basic Discovery Endpoint Tests
 - [x] All Basic Tests
@@ -60,6 +92,10 @@ Basic Discovery Endpoint Tests
 Basic API Root Endpoint Tests
 - [x] All Basic Tests
 - [x] Successful GET of API Root Resource
+
+Basic Collections Endpoint Tests
+- [x] All Basic Tests
+- [x] Successful GET of Collections Resource
 
 
 ## License ##
