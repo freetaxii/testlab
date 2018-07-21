@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/freetaxii/testlab/suite"
 	"github.com/gologme/log"
 	"github.com/pborman/getopt"
 )
