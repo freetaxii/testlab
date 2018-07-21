@@ -31,13 +31,17 @@ and should be done by the majority of implementations.
 Read-only  Test Collection ID 22f763c1-e478-4765-8635-e4c32db665ea
 
 {
-    "id": "22f763c1-e478-4765-8635-e4c32db665ea",
-    "title": "Read-Only TestLab Collection",
-    "description": "This is a Read-Only collection for use with the FreeTAXII TestLab tool",
-    "can_read": true,
-    "can_write": false,
-    "media_types": [
-        "application/stix+json;version=2.1"
+    "collections": [
+        {
+            "id": "22f763c1-e478-4765-8635-e4c32db665ea",
+            "title": "Read-Only TestLab Collection",
+            "description": "This is a Read-Only collection for use with the FreeTAXII TestLab tool",
+            "can_read": true,
+            "can_write": false,
+            "media_types": [
+                "application/stix+json;version=2.1"
+            ]
+        }
     ]
 }
 ```
@@ -49,33 +53,37 @@ Write-only Test Collection ID 4f7327e2-f5b4-4269-b6e0-3564d174ce69
 Read-Write Test Collection ID 8c49f14d-8ea3-4f03-ab28-19dbca973dde
 
 {
-    "id": "22f763c1-e478-4765-8635-e4c32db665ea",
-    "title": "Read-Only TestLab Collection",
-    "description": "This is a Read-Only collection for use with the FreeTAXII TestLab tool",
-    "can_read": true,
-    "can_write": false,
-    "media_types": [
-        "application/stix+json;version=2.1"
-    ]
-}
-{
-    "id": "4f7327e2-f5b4-4269-b6e0-3564d174ce69",
-    "title": "Write-Only TestLab Collection",
-    "description": "This is a Write-Only collection for use with the FreeTAXII TestLab tool",
-    "can_read": false,
-    "can_write": true,
-    "media_types": [
-        "application/stix+json;version=2.1"
-    ]
-}
-{
-    "id": "8c49f14d-8ea3-4f03-ab28-19dbca973dde",
-    "title": "Read-Write TestLab Collection",
-    "description": "This is a Read-Write collection for use with the FreeTAXII TestLab tool",
-    "can_read": true,
-    "can_write": true,
-    "media_types": [
-        "application/stix+json;version=2.1"
+    "collections": [
+        {
+            "id": "22f763c1-e478-4765-8635-e4c32db665ea",
+            "title": "Read-Only TestLab Collection",
+            "description": "This is a Read-Only collection for use with the FreeTAXII TestLab tool",
+            "can_read": true,
+            "can_write": false,
+            "media_types": [
+                "application/stix+json;version=2.1"
+            ]
+        },
+        {
+            "id": "4f7327e2-f5b4-4269-b6e0-3564d174ce69",
+            "title": "Write-Only TestLab Collection",
+            "description": "This is a Write-Only collection for use with the FreeTAXII TestLab tool",
+            "can_read": false,
+            "can_write": true,
+            "media_types": [
+                "application/stix+json;version=2.1"
+            ]
+        },
+        {
+            "id": "8c49f14d-8ea3-4f03-ab28-19dbca973dde",
+            "title": "Read-Write TestLab Collection",
+            "description": "This is a Read-Write collection for use with the FreeTAXII TestLab tool",
+            "can_read": true,
+            "can_write": true,
+            "media_types": [
+                "application/stix+json;version=2.1"
+            ]
+        }
     ]
 }
 ```
