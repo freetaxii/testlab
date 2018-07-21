@@ -3,7 +3,9 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/freetaxii/testlab)](https://goreportcard.com/report/github.com/freetaxii/testlab) [![GoDoc](https://godoc.org/github.com/freetaxii/testlab?status.png)](https://godoc.org/github.com/freetaxii/testlab)
 
 testlab contains a series of testing tools to automatically test a TAXII 2.x 
-implementation. It was written in the Go (Golang) programming language.
+implementation. It was written in the Go (Golang) programming language and as
+such each tool can be compiled into a standalone statically compiled native 
+executable. 
 
 ## Test Setup ##
 The three test tools listed below all require that an existing API Root be 
@@ -20,12 +22,24 @@ https://somesite.com/taxii/api1/
 ```
 
 This API Root should be configured in one of two ways with the collections 
-listed below:
+listed below. Configuration 2 the Read-Write Implementation is the most common 
+and should be done by the majority of implementations.
 
 
 ### Configuration 1: Read Only Implementation ###
 ```
 Read-only  Test Collection ID 22f763c1-e478-4765-8635-e4c32db665ea
+
+{
+    "id": "22f763c1-e478-4765-8635-e4c32db665ea",
+    "title": "Read-Only TestLab Collection",
+    "description": "This is a Read-Only collection for use with the FreeTAXII TestLab tool",
+    "can_read": true,
+    "can_write": false,
+    "media_types": [
+        "application/stix+json;version=2.1"
+    ]
+}
 ```
 
 ### Configuration 2: Read and Write Implementation ###
@@ -33,6 +47,37 @@ Read-only  Test Collection ID 22f763c1-e478-4765-8635-e4c32db665ea
 Read-only  Test Collection ID 22f763c1-e478-4765-8635-e4c32db665ea
 Write-only Test Collection ID 4f7327e2-f5b4-4269-b6e0-3564d174ce69
 Read-Write Test Collection ID 8c49f14d-8ea3-4f03-ab28-19dbca973dde
+
+{
+    "id": "22f763c1-e478-4765-8635-e4c32db665ea",
+    "title": "Read-Only TestLab Collection",
+    "description": "This is a Read-Only collection for use with the FreeTAXII TestLab tool",
+    "can_read": true,
+    "can_write": false,
+    "media_types": [
+        "application/stix+json;version=2.1"
+    ]
+}
+{
+    "id": "4f7327e2-f5b4-4269-b6e0-3564d174ce69",
+    "title": "Write-Only TestLab Collection",
+    "description": "This is a Write-Only collection for use with the FreeTAXII TestLab tool",
+    "can_read": false,
+    "can_write": true,
+    "media_types": [
+        "application/stix+json;version=2.1"
+    ]
+}
+{
+    "id": "8c49f14d-8ea3-4f03-ab28-19dbca973dde",
+    "title": "Read-Write TestLab Collection",
+    "description": "This is a Read-Write collection for use with the FreeTAXII TestLab tool",
+    "can_read": true,
+    "can_write": true,
+    "media_types": [
+        "application/stix+json;version=2.1"
+    ]
+}
 ```
 
 

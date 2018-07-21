@@ -25,7 +25,7 @@ func (s *Suite) TestCollectionsService() {
 func (s *Suite) testCollectionsOutput() {
 	s.Logger.Println("== Test C1: Test successful response")
 	if s.Verbose {
-		s.Logger.Println("++ This test will send a correct authentication parameter and will check to see if a proper collections resource is returned")
+		s.Logger.Println("++ This test will check to see if a proper collections resource is returned")
 	}
 
 	var o resources.Collections

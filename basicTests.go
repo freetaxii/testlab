@@ -19,7 +19,7 @@ import (
 // populated by the Makefile and uses the Git Head hash as its identifier.
 // These variables are used in the console output for --version and --help.
 var (
-	Version = "0.0.1"
+	Version = "0.0.2"
 	Build   string
 )
 
@@ -28,7 +28,9 @@ var (
 	sOptURL          = getopt.StringLong("url", 'u', "https://127.0.0.1:8000/", "TAXII Server Address", "string")
 	sOptDiscovery    = getopt.StringLong("discovery", 'd', "taxii2", "Name of Discovery Service", "string")
 	sOptAPIRoot      = getopt.StringLong("apiroot", 'a', "api1", "Name of API Root", "string")
-	sOptCollectionID = getopt.StringLong("collection", 'c', "", "Collection ID", "string")
+	sOptReadOnly     = getopt.StringLong("readonly", 'r', "22f763c1-e478-4765-8635-e4c32db665ea", "The read-only collection ID", "string")
+	sOptWriteOnly    = getopt.StringLong("writeonly", 'w', "4f7327e2-f5b4-4269-b6e0-3564d174ce69", "The write-only collection ID", "string")
+	sOptReadWrite    = getopt.StringLong("readwrite", 'z', "8c49f14d-8ea3-4f03-ab28-19dbca973dde", "The read-write collection ID", "string")
 	sOptUsername     = getopt.StringLong("username", 'n', "", "Username", "string")
 	sOptPassword     = getopt.StringLong("password", 'p', "", "Password", "string")
 	bOptOldMediaType = getopt.BoolLong("oldmediatype", 0, "Use 2.0 media types")
@@ -93,6 +95,9 @@ func processCommandLineFlags(wb *testing.Workbench) {
 	wb.Password = *sOptPassword
 	wb.Verbose = *bOptVerbose
 	wb.OldMediaType = *bOptOldMediaType
+	wb.ReadOnly = *sOptReadOnly
+	wb.WriteOnly = *sOptWriteOnly
+	wb.ReadWrite = *sOptReadWrite
 }
 
 /*
@@ -100,7 +105,7 @@ printOutputHeader - This function will print a header for all console output
 */
 func printOutputHeader() {
 	fmt.Println("")
-	fmt.Println("FreeTAXII - Test Lab")
+	fmt.Println("FreeTAXII TestLab - Basic Connectivity Tests")
 	fmt.Println("Copyright: Bret Jordan")
 	fmt.Println("Version:", Version)
 	if Build != "" {

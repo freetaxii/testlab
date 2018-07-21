@@ -24,7 +24,7 @@ func (s *Suite) TestAPIRootService() {
 func (s *Suite) testAPIRootOutput() {
 	s.Logger.Println("== Test A1: Test successful response")
 	if s.Verbose {
-		s.Logger.Println("++ This test will send a correct authentication parameter and will check to see if a proper API root resource is returned")
+		s.Logger.Println("++ This test will check to see if a proper API root resource is returned")
 	}
 
 	var o resources.APIRoot

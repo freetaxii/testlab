@@ -24,6 +24,9 @@ type Workbench struct {
 	Discovery    string
 	APIRoot      string
 	OldMediaType bool
+	ReadOnly     string
+	WriteOnly    string
+	ReadWrite    string
 }
 
 func NewWorkbench() *Workbench {
@@ -73,6 +76,7 @@ func NewSuite(logger *log.Logger, wb *Workbench) *Suite {
 	s.Password = wb.Password
 	s.Verbose = wb.Verbose
 	s.OldMediaType = wb.OldMediaType
+	s.ReadOnly = wb.ReadOnly
 
 	if wb.OldMediaType {
 		s.TAXIIMediaType = "application/vnd.oasis.taxii+json"

@@ -24,7 +24,7 @@ func (s *Suite) TestDiscoveryService() {
 func (s *Suite) testDiscoveryOutput() {
 	s.Logger.Println("== Test D1: Test successful response")
 	if s.Verbose {
-		s.Logger.Println("++ This test will send a correct authentication parameter and will check to see if a proper discovery resource is returned")
+		s.Logger.Println("++ This test will check to see if a proper discovery resource is returned")
 	}
 
 	var o resources.Discovery
