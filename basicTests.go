@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/freetaxii/testlab/testing"
 	"github.com/gologme/log"
 	"github.com/pborman/getopt"
 )
@@ -46,13 +45,13 @@ func main() {
 	logger := log.New(os.Stderr, "", log.LstdFlags)
 	//logger.EnableLevel("debug")
 
-	wb := testing.NewWorkbench()
+	wb := suite.NewWorkbench()
 	processCommandLineFlags(wb)
 
 	logger.Println("------------------------------------------------------------")
 	logger.Println("Starting FreeTAXII Testing Suite...")
 	logger.Println("------------------------------------------------------------")
-	s := testing.NewSuite(logger, wb)
+	s := suite.NewSuite(logger, wb)
 	s.TestDiscoveryService()
 	s.TestAPIRootService()
 	s.TestCollectionsService()
@@ -66,7 +65,7 @@ func main() {
 processCommandLineFlags - This function will process the command line flags
 and will print the version or help information as needed.
 */
-func processCommandLineFlags(wb *testing.Workbench) {
+func processCommandLineFlags(wb *suite.Workbench) {
 	getopt.HelpColumn = 35
 	getopt.DisplayWidth = 120
 	getopt.SetParameters("")
