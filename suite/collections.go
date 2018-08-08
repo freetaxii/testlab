@@ -13,6 +13,11 @@ import (
 	"github.com/freetaxii/libstix2/resources"
 )
 
+/*
+TestCollectionsService - This method will perform all of the standard tests
+against the Collections endpoint. It will also check to make sure the output
+from the GET request is correct and will echo the output to the logs.
+*/
 func (s *Suite) TestCollectionsService() {
 	path := s.APIRoot + "/collections"
 	s.setPath(path)
