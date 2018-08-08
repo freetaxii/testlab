@@ -1,0 +1,151 @@
+{
+    "type": "bundle",
+    "id": "bundle--e5214f9b-ae28-4692-9394-2fd2ed85d78a",
+    "objects": [
+        {
+            "type": "indicator",
+            "spec_version": "2.1",
+            "id": "indicator--96a2b2aa-4332-4b6f-902b-42b940f4706c",
+            "created": "2018-08-08T01:51:01.123Z",
+            "modified": "2018-08-08T01:51:01.123Z",
+            "name": "TestLab Indicator 1",
+            "description": "This is indicator 1 for Read-Only TestLab Collection",
+            "indicator_type": [
+                "compromised"
+            ],
+            "pattern": "[ ipv4-addr:value = '192.168.100.100' ]",
+            "valid_from": "2018-08-08T01:51:01.123Z",
+            "valid_until": "2018-09-09T01:51:01.123Z",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "lockheed-martin-cyber-kill-chain",
+                    "phase_name": "delivery"
+                }
+            ]
+        },
+        {
+            "type": "indicator",
+            "spec_version": "2.1",
+            "id": "indicator--96a2b2aa-4332-4b6f-902b-42b940f4706c",
+            "created": "2018-08-08T01:51:01.123Z",
+            "modified": "2018-08-08T01:52:01.234Z",
+            "labels": [
+                "a"
+            ],
+            "name": "TestLab Indicator 1",
+            "description": "This is indicator 1 for Read-Only TestLab Collection",
+            "indicator_type": [
+                "compromised"
+            ],
+            "pattern": "[ ipv4-addr:value = '192.168.100.100' ]",
+            "valid_from": "2018-08-08T01:51:01.123Z",
+            "valid_until": "2018-09-09T01:51:01.123Z",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "lockheed-martin-cyber-kill-chain",
+                    "phase_name": "delivery"
+                }
+            ]
+        },
+        {
+            "type": "indicator",
+            "spec_version": "2.1",
+            "id": "indicator--96a2b2aa-4332-4b6f-902b-42b940f4706c",
+            "created": "2018-08-08T01:51:01.123Z",
+            "modified": "2018-08-08T01:53:01.345Z",
+            "labels": [
+                "a",
+                "b",
+                "c"
+            ],
+            "name": "TestLab Indicator 1",
+            "description": "This is indicator 1 for Read-Only TestLab Collection",
+            "indicator_type": [
+                "compromised"
+            ],
+            "pattern": "[ ipv4-addr:value = '192.168.100.100' ]",
+            "valid_from": "2018-08-08T01:51:01.123Z",
+            "valid_until": "2018-09-09T01:51:01.123Z",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "lockheed-martin-cyber-kill-chain",
+                    "phase_name": "delivery"
+                }
+            ]
+        },
+        {
+            "type": "indicator",
+            "spec_version": "2.1",
+            "id": "indicator--96a2b2aa-4332-4b6f-902b-42b940f4706c",
+            "created": "2018-08-08T01:51:01.123Z",
+            "modified": "2018-08-08T01:54:01.456Z",
+            "labels": [
+                "a",
+                "b",
+                "c"
+            ],
+            "name": "TestLab Indicator 1",
+            "description": "This is indicator 1 for Read-Only TestLab Collection",
+            "indicator_type": [
+                "compromised"
+            ],
+            "pattern": "[ ipv4-addr:value = '192.168.100.100' ]",
+            "valid_from": "2018-08-08T01:51:01.123Z",
+            "valid_until": "2018-09-09T01:51:01.123Z",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "lockheed-martin-cyber-kill-chain",
+                    "phase_name": "delivery"
+                }
+            ]
+        },
+        {
+            "type": "indicator",
+            "spec_version": "2.1",
+            "id": "indicator--96a2b2aa-4332-4b6f-902b-42b940f4706c",
+            "created": "2018-08-08T01:51:01.123Z",
+            "modified": "2018-08-08T01:55:01.567Z",
+            "labels": [
+                "a",
+                "b",
+                "d"
+            ],
+            "name": "TestLab Indicator 1",
+            "description": "This is indicator 1 for Read-Only TestLab Collection",
+            "indicator_type": [
+                "compromised"
+            ],
+            "pattern": "[ ipv4-addr:value = '192.168.100.100' ]",
+            "valid_from": "2018-08-08T01:51:01.123Z",
+            "valid_until": "2018-09-09T01:51:01.123Z",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "lockheed-martin-cyber-kill-chain",
+                    "phase_name": "delivery"
+                }
+            ]
+        },
+        {
+            "type": "indicator",
+            "spec_version": "2.1",
+            "id": "indicator--0baca86a-72a3-484e-8627-fbb0e6906635",
+            "created": "2018-08-08T02:51:02.123Z",
+            "modified": "2018-08-08T02:51:02.123Z",
+            "name": "TestLab Indicator 2",
+            "description": "This is indicator 2 for Read-Only TestLab Collection",
+            "indicator_type": [
+                "anonymization"
+            ],
+            "pattern": "[ ipv4-addr:value = '192.168.200.200' ]",
+            "valid_from": "2018-08-08T02:51:02.123Z",
+            "valid_until": "2018-09-09T02:51:02.123Z",
+            "kill_chain_phases": [
+                {
+                    "kill_chain_name": "lockheed-martin-cyber-kill-chain",
+                    "phase_name": "delivery"
+                }
+            ]
+        }
+    ]
+}
+
