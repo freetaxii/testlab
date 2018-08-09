@@ -19,7 +19,7 @@ import (
 // populated by the Makefile and uses the Git Head hash as its identifier.
 // These variables are used in the console output for --version and --help.
 var (
-	Version = "0.0.2"
+	Version = "0.3"
 	Build   string
 )
 
@@ -108,7 +108,7 @@ printOutputHeader - This function will print a header for all console output
 */
 func printOutputHeader() {
 	fmt.Println("")
-	fmt.Println("FreeTAXII TestLab - Basic Connectivity Tests")
+	fmt.Println("FreeTAXII TestLab - Get Content Tests")
 	fmt.Println("Copyright: Bret Jordan")
 	fmt.Println("Version:", Version)
 	if Build != "" {
