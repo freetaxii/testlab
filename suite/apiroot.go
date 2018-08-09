@@ -22,12 +22,15 @@ func (s *Suite) TestAPIRootService() {
 	s.setPath(s.APIRoot)
 	s.Logger.Println()
 	s.Logger.Println("== Testing API Root Service")
+	if s.Verbose {
+		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
+	}
 	s.basicTests()
 	s.testAPIRootOutput()
 }
 
 func (s *Suite) testAPIRootOutput() {
-	s.Logger.Println("== Test A1: Test successful response")
+	s.Logger.Println("== Test A1: Test successful response from api root endpoint")
 	if s.Verbose {
 		s.Logger.Println("++ This test will check to see if a proper API root resource is returned")
 	}
@@ -49,7 +52,7 @@ func (s *Suite) testAPIRootOutput() {
 
 	var data []byte
 	data, _ = json.MarshalIndent(o, "", "    ")
-	s.Logger.Println("\n", string(data))
+	s.Logger.Println("++ API Root Resource Returned:\n", string(data))
 
 	s.printSummary()
 	s.reset()

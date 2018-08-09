@@ -23,12 +23,15 @@ func (s *Suite) TestCollectionsService() {
 	s.setPath(path)
 	s.Logger.Println()
 	s.Logger.Println("== Testing Collections Service")
+	if s.Verbose {
+		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
+	}
 	s.basicTests()
 	s.testCollectionsOutput()
 }
 
 func (s *Suite) testCollectionsOutput() {
-	s.Logger.Println("== Test C1: Test successful response")
+	s.Logger.Println("== Test C1: Test successful response from collections endpoint")
 	if s.Verbose {
 		s.Logger.Println("++ This test will check to see if a proper collections resource is returned")
 	}
@@ -50,7 +53,7 @@ func (s *Suite) testCollectionsOutput() {
 
 	var data []byte
 	data, _ = json.MarshalIndent(o, "", "    ")
-	s.Logger.Println("\n", string(data))
+	s.Logger.Println("++ Collections Resource Returned:\n", string(data))
 
 	s.printSummary()
 	s.reset()

@@ -77,6 +77,8 @@ func NewSuite(logger *log.Logger, wb *Workbench) *Suite {
 	s.Verbose = wb.Verbose
 	s.OldMediaType = wb.OldMediaType
 	s.ReadOnly = wb.ReadOnly
+	s.WriteOnly = wb.WriteOnly
+	s.ReadWrite = wb.ReadWrite
 
 	if wb.OldMediaType {
 		s.TAXIIMediaType = "application/vnd.oasis.taxii+json"

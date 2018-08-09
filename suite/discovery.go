@@ -22,12 +22,15 @@ func (s *Suite) TestDiscoveryService() {
 	s.setPath(s.Discovery)
 	s.Logger.Println()
 	s.Logger.Println("== Testing Discovery Service")
+	if s.Verbose {
+		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
+	}
 	s.basicTests()
 	s.testDiscoveryOutput()
 }
 
 func (s *Suite) testDiscoveryOutput() {
-	s.Logger.Println("== Test D1: Test successful response")
+	s.Logger.Println("== Test D1: Test successful response from discovery endpoint")
 	if s.Verbose {
 		s.Logger.Println("++ This test will check to see if a proper discovery resource is returned")
 	}
@@ -49,7 +52,7 @@ func (s *Suite) testDiscoveryOutput() {
 
 	var data []byte
 	data, _ = json.MarshalIndent(o, "", "    ")
-	s.Logger.Println("\n", string(data))
+	s.Logger.Println("++ Discovery Resource Returned:\n", string(data))
 
 	s.printSummary()
 	s.reset()

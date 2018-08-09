@@ -56,6 +56,9 @@ func main() {
 	s.TestDiscoveryService()
 	s.TestAPIRootService()
 	s.TestCollectionsService()
+	s.TestROCollectionService()
+	s.TestWOCollectionService()
+	s.TestRWCollectionService()
 }
 
 // --------------------------------------------------
