@@ -26,10 +26,10 @@ func (s *Suite) TestAPIRootService() {
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
 	s.basicTests()
-	s.testAPIRootOutput()
+	s.getAPIRootOutput()
 }
 
-func (s *Suite) testAPIRootOutput() {
+func (s *Suite) getAPIRootOutput() {
 	s.Logger.Println("== Test A1: Test successful response from api root endpoint")
 	if s.Verbose {
 		s.Logger.Println("++ This test will check to see if a proper API root resource is returned")

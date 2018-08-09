@@ -27,7 +27,10 @@ func (s *Suite) TestROCollectionService() {
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
 	s.basicTests()
+	s.getROCollectionOutput()
+}
 
+func (s *Suite) getROCollectionOutput() {
 	s.Logger.Println("== Test C2: Test successful response from read-only collection endpoint")
 	if s.Verbose {
 		s.Logger.Println("++ This test will check to see if a proper read-only collection resource is returned")
@@ -75,7 +78,10 @@ func (s *Suite) TestWOCollectionService() {
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
 	s.basicTests()
+	s.getWOCollectionOutput()
+}
 
+func (s *Suite) getWOCollectionOutput() {
 	s.Logger.Println("== Test C3: Test successful response from write-only collection endpoint")
 	if s.Verbose {
 		s.Logger.Println("++ This test will check to see if a proper write-only collection resource is returned")
@@ -124,7 +130,10 @@ func (s *Suite) TestRWCollectionService() {
 	}
 
 	s.basicTests()
+	s.getRWCollectionOutput()
+}
 
+func (s *Suite) getRWCollectionOutput() {
 	s.Logger.Println("== Test C4: Test successful response from read-write collection endpoint")
 	if s.Verbose {
 		s.Logger.Println("++ This test will check to see if a proper read-write collection resource is returned")

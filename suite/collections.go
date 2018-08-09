@@ -27,10 +27,10 @@ func (s *Suite) TestCollectionsService() {
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
 	s.basicTests()
-	s.testCollectionsOutput()
+	s.getCollectionsOutput()
 }
 
-func (s *Suite) testCollectionsOutput() {
+func (s *Suite) getCollectionsOutput() {
 	s.Logger.Println("== Test C1: Test successful response from collections endpoint")
 	if s.Verbose {
 		s.Logger.Println("++ This test will check to see if a proper collections resource is returned")

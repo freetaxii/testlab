@@ -26,10 +26,10 @@ func (s *Suite) TestDiscoveryService() {
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
 	s.basicTests()
-	s.testDiscoveryOutput()
+	s.getDiscoveryOutput()
 }
 
-func (s *Suite) testDiscoveryOutput() {
+func (s *Suite) getDiscoveryOutput() {
 	s.Logger.Println("== Test D1: Test successful response from discovery endpoint")
 	if s.Verbose {
 		s.Logger.Println("++ This test will check to see if a proper discovery resource is returned")
