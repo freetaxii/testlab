@@ -10,7 +10,7 @@
             "modified": "2018-08-08T01:51:01.123Z",
             "name": "TestLab Indicator 1",
             "description": "This is indicator 1 for Read-Only TestLab Collection",
-            "indicator_type": [
+            "indicator_types": [
                 "compromised"
             ],
             "pattern": "[ ipv4-addr:value = '192.168.100.100' ]",
@@ -34,7 +34,7 @@
             ],
             "name": "TestLab Indicator 1",
             "description": "This is indicator 1 for Read-Only TestLab Collection",
-            "indicator_type": [
+            "indicator_types": [
                 "compromised"
             ],
             "pattern": "[ ipv4-addr:value = '192.168.100.100' ]",
@@ -60,7 +60,7 @@
             ],
             "name": "TestLab Indicator 1",
             "description": "This is indicator 1 for Read-Only TestLab Collection",
-            "indicator_type": [
+            "indicator_types": [
                 "compromised"
             ],
             "pattern": "[ ipv4-addr:value = '192.168.100.100' ]",
@@ -86,7 +86,7 @@
             ],
             "name": "TestLab Indicator 1",
             "description": "This is indicator 1 for Read-Only TestLab Collection",
-            "indicator_type": [
+            "indicator_types": [
                 "compromised"
             ],
             "pattern": "[ ipv4-addr:value = '192.168.100.100' ]",
@@ -112,7 +112,7 @@
             ],
             "name": "TestLab Indicator 1",
             "description": "This is indicator 1 for Read-Only TestLab Collection",
-            "indicator_type": [
+            "indicator_types": [
                 "compromised"
             ],
             "pattern": "[ ipv4-addr:value = '192.168.100.100' ]",
@@ -133,7 +133,7 @@
             "modified": "2018-08-08T02:51:02.123Z",
             "name": "TestLab Indicator 2",
             "description": "This is indicator 2 for Read-Only TestLab Collection",
-            "indicator_type": [
+            "indicator_types": [
                 "anonymization"
             ],
             "pattern": "[ ipv4-addr:value = '192.168.200.200' ]",
