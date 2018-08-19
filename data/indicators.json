@@ -6,8 +6,11 @@
             "type": "indicator",
             "spec_version": "2.1",
             "id": "indicator--96a2b2aa-4332-4b6f-902b-42b940f4706c",
+            "created_by_ref": "identity--abd090f7-5ada-4506-b6d0-5feae5ff90bc",
             "created": "2018-08-08T01:51:01.123Z",
             "modified": "2018-08-08T01:51:01.123Z",
+            "confidence": 99,
+            "lang": "en-us",
             "name": "TestLab Indicator 1",
             "description": "This is indicator 1 for Read-Only TestLab Collection",
             "indicator_types": [
@@ -27,11 +30,14 @@
             "type": "indicator",
             "spec_version": "2.1",
             "id": "indicator--96a2b2aa-4332-4b6f-902b-42b940f4706c",
+            "created_by_ref": "identity--abd090f7-5ada-4506-b6d0-5feae5ff90bc",
             "created": "2018-08-08T01:51:01.123Z",
             "modified": "2018-08-08T01:52:01.234Z",
             "labels": [
                 "a"
             ],
+            "confidence": 99,
+            "lang": "en-us",
             "name": "TestLab Indicator 1",
             "description": "This is indicator 1 for Read-Only TestLab Collection",
             "indicator_types": [
@@ -51,6 +57,7 @@
             "type": "indicator",
             "spec_version": "2.1",
             "id": "indicator--96a2b2aa-4332-4b6f-902b-42b940f4706c",
+            "created_by_ref": "identity--abd090f7-5ada-4506-b6d0-5feae5ff90bc",
             "created": "2018-08-08T01:51:01.123Z",
             "modified": "2018-08-08T01:53:01.345Z",
             "labels": [
@@ -58,6 +65,8 @@
                 "b",
                 "c"
             ],
+            "confidence": 99,
+            "lang": "en-us",
             "name": "TestLab Indicator 1",
             "description": "This is indicator 1 for Read-Only TestLab Collection",
             "indicator_types": [
@@ -77,6 +86,7 @@
             "type": "indicator",
             "spec_version": "2.1",
             "id": "indicator--96a2b2aa-4332-4b6f-902b-42b940f4706c",
+            "created_by_ref": "identity--abd090f7-5ada-4506-b6d0-5feae5ff90bc",
             "created": "2018-08-08T01:51:01.123Z",
             "modified": "2018-08-08T01:54:01.456Z",
             "labels": [
@@ -84,6 +94,8 @@
                 "b",
                 "c"
             ],
+            "confidence": 99,
+            "lang": "en-us",
             "name": "TestLab Indicator 1",
             "description": "This is indicator 1 for Read-Only TestLab Collection",
             "indicator_types": [
@@ -103,6 +115,7 @@
             "type": "indicator",
             "spec_version": "2.1",
             "id": "indicator--96a2b2aa-4332-4b6f-902b-42b940f4706c",
+            "created_by_ref": "identity--abd090f7-5ada-4506-b6d0-5feae5ff90bc",
             "created": "2018-08-08T01:51:01.123Z",
             "modified": "2018-08-08T01:55:01.567Z",
             "labels": [
@@ -110,6 +123,8 @@
                 "b",
                 "d"
             ],
+            "confidence": 99,
+            "lang": "en-us",
             "name": "TestLab Indicator 1",
             "description": "This is indicator 1 for Read-Only TestLab Collection",
             "indicator_types": [
@@ -129,8 +144,11 @@
             "type": "indicator",
             "spec_version": "2.1",
             "id": "indicator--0baca86a-72a3-484e-8627-fbb0e6906635",
+            "created_by_ref": "identity--abd090f7-5ada-4506-b6d0-5feae5ff90bc",
             "created": "2018-08-08T02:51:02.123Z",
             "modified": "2018-08-08T02:51:02.123Z",
+            "confidence": 99,
+            "lang": "en-us",
             "external_references": [
                 {
                     "source_name": "TestLab Indicators",

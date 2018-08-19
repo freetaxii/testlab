@@ -9,13 +9,13 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/freetaxii/libstix2/datastore/sqlite3"
 	"github.com/freetaxii/libstix2/objects"
 	"github.com/freetaxii/libstix2/resources"
 	"github.com/freetaxii/testlab/suite"
+	"github.com/gologme/log"
 	"github.com/pborman/getopt"
 )
 
@@ -45,8 +45,17 @@ func main() {
 	database := *bOptDatabase
 	indicatorsOnly := *bOptIndicatorsOnly
 
+	// --------------------------------------------------
+	// Setup logger
+	// --------------------------------------------------
+	logger := log.New(os.Stderr, "", log.LstdFlags)
+	logger.EnableLevel("info")
+	logger.EnableLevel("warn")
+	logger.EnableLevel("debug")
+	logger.EnableLevel("trace")
+
 	if database {
-		ds = sqlite3.New(nil, *sOptDatabaseFilename)
+		ds = sqlite3.New(logger, *sOptDatabaseFilename)
 		defer ds.Close()
 	}
 
@@ -129,7 +138,8 @@ func main() {
 	for _, v := range iData {
 		b.AddObject(v)
 		if database {
-			ds.AddObject(v)
+			err = ds.AddObject(&v)
+			handleError(err)
 			entry1 := resources.CreateCollectionRecord(c1.ID, v.ID)
 			err = ds.AddTAXIIObject(entry1)
 			handleError(err)
