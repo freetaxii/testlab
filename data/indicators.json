@@ -131,10 +131,19 @@
             "id": "indicator--0baca86a-72a3-484e-8627-fbb0e6906635",
             "created": "2018-08-08T02:51:02.123Z",
             "modified": "2018-08-08T02:51:02.123Z",
+            "external_references": [
+                {
+                    "source_name": "TestLab Indicators",
+                    "description": "This is from the TestLab",
+                    "url": "https://github.com/freetaxii/testlab",
+                    "external_id": "2"
+                }
+            ],
             "name": "TestLab Indicator 2",
             "description": "This is indicator 2 for Read-Only TestLab Collection",
             "indicator_types": [
-                "anonymization"
+                "anonymization",
+                "compromised"
             ],
             "pattern": "[ ipv4-addr:value = '192.168.200.200' ]",
             "valid_from": "2018-08-08T02:51:02.123Z",
@@ -148,4 +157,3 @@
         }
     ]
 }
-

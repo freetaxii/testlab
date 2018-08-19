@@ -31,6 +31,7 @@ var (
 var (
 	defaultDatabaseFilename = "freetaxii.db"
 	sOptDatabaseFilename    = getopt.StringLong("filename", 'f', defaultDatabaseFilename, "Database Filename", "string")
+	bOptIndicatorsOnly      = getopt.BoolLong("indicator", 'i', "Only print indicators")
 	bOptDatabase            = getopt.BoolLong("database", 0, "Add to database")
 	bOptHelp                = getopt.BoolLong("help", 0, "Help")
 	bOptVer                 = getopt.BoolLong("version", 0, "Version")
@@ -42,6 +43,7 @@ func main() {
 	var ds *sqlite3.Datastore
 	var err error
 	database := *bOptDatabase
+	indicatorsOnly := *bOptIndicatorsOnly
 
 	if database {
 		ds = sqlite3.New(nil, *sOptDatabaseFilename)
@@ -134,36 +136,38 @@ func main() {
 		}
 	}
 
-	apData := suite.GenerateAttackPatternData()
-	for _, v := range apData {
-		b.AddObject(v)
-		if database {
-			ds.AddObject(v)
-			entry1 := resources.CreateCollectionRecord(c1.ID, v.ID)
-			err = ds.AddTAXIIObject(entry1)
-			handleError(err)
+	if indicatorsOnly == false {
+		apData := suite.GenerateAttackPatternData()
+		for _, v := range apData {
+			b.AddObject(v)
+			if database {
+				ds.AddObject(v)
+				entry1 := resources.CreateCollectionRecord(c1.ID, v.ID)
+				err = ds.AddTAXIIObject(entry1)
+				handleError(err)
+			}
 		}
-	}
 
-	taData := suite.GenerateThreatActorData()
-	for _, v := range taData {
-		b.AddObject(v)
-		if database {
-			ds.AddObject(v)
-			entry1 := resources.CreateCollectionRecord(c1.ID, v.ID)
-			err = ds.AddTAXIIObject(entry1)
-			handleError(err)
+		taData := suite.GenerateThreatActorData()
+		for _, v := range taData {
+			b.AddObject(v)
+			if database {
+				ds.AddObject(v)
+				entry1 := resources.CreateCollectionRecord(c1.ID, v.ID)
+				err = ds.AddTAXIIObject(entry1)
+				handleError(err)
+			}
 		}
-	}
 
-	cData := suite.GenerateCampaignData()
-	for _, v := range cData {
-		b.AddObject(v)
-		if database {
-			ds.AddObject(v)
-			entry1 := resources.CreateCollectionRecord(c1.ID, v.ID)
-			err = ds.AddTAXIIObject(entry1)
-			handleError(err)
+		cData := suite.GenerateCampaignData()
+		for _, v := range cData {
+			b.AddObject(v)
+			if database {
+				ds.AddObject(v)
+				entry1 := resources.CreateCollectionRecord(c1.ID, v.ID)
+				err = ds.AddTAXIIObject(entry1)
+				handleError(err)
+			}
 		}
 	}
 
