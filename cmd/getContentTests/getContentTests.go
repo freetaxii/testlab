@@ -26,6 +26,7 @@ var (
 // These global variables are for dealing with command line options
 var (
 	sOptURL          = getopt.StringLong("url", 'u', "https://127.0.0.1:8000/", "TAXII Server Address", "string")
+	sOptProxy        = getopt.StringLong("proxy", '', "", "Proxy Server Address", "string")
 	sOptDiscovery    = getopt.StringLong("discovery", 'd', "taxii2", "Name of Discovery Service", "string")
 	sOptAPIRoot      = getopt.StringLong("apiroot", 'a', "api1", "Name of API Root", "string")
 	sOptReadOnly     = getopt.StringLong("readonly", 'r', "22f763c1-e478-4765-8635-e4c32db665ea", "The read-only collection ID", "string")
@@ -53,12 +54,13 @@ func main() {
 	logger.Println("Starting FreeTAXII Testing Suite...")
 	logger.Println("------------------------------------------------------------")
 	s := suite.NewSuite(logger, wb)
-	s.TestDiscoveryService()
-	s.TestAPIRootService()
-	s.TestCollectionsService()
-	s.TestROCollectionService()
-	s.TestWOCollectionService()
-	s.TestRWCollectionService()
+	// s.TestDiscoveryService()
+	// s.TestAPIRootService()
+	// s.TestCollectionsService()
+	// s.TestROCollectionService()
+	// s.TestWOCollectionService()
+	// s.TestRWCollectionService()
+	s.TestROCollectionObjectsService()
 }
 
 // --------------------------------------------------
@@ -92,6 +94,7 @@ func processCommandLineFlags(wb *suite.Workbench) {
 
 	// TODO Verify URL and element syntax
 	wb.URL = *sOptURL
+	wb.Proxy = *sOptProxy
 	wb.Discovery = *sOptDiscovery
 	wb.APIRoot = *sOptAPIRoot
 	wb.Username = *sOptUsername

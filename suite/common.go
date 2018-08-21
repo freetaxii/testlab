@@ -10,6 +10,7 @@ import (
 	"crypto/tls"
 	"net"
 	"net/http"
+	"net/url"
 	"os"
 	"time"
 
@@ -21,6 +22,7 @@ type Workbench struct {
 	Username     string
 	Password     string
 	URL          string
+	Proxy        string
 	Discovery    string
 	APIRoot      string
 	OldMediaType bool
@@ -48,6 +50,7 @@ type Suite struct {
 func NewSuite(logger *log.Logger, wb *Workbench) *Suite {
 	var s Suite
 	var err error
+	var netTransport *http.Transport
 
 	if logger == nil {
 		s.Logger = log.New(os.Stderr, "", log.LstdFlags)
@@ -55,15 +58,34 @@ func NewSuite(logger *log.Logger, wb *Workbench) *Suite {
 		s.Logger = logger
 	}
 
-	netTransport := &http.Transport{
-		Dial: (&net.Dialer{
-			Timeout: 5 * time.Second,
-		}).Dial,
-		TLSHandshakeTimeout: 5 * time.Second,
-		TLSClientConfig: &tls.Config{
-			InsecureSkipVerify: true,
-		},
+	if wb.Proxy != "" {
+		proxyURL, err := url.Parse(wb.Proxy)
+		if err != nil {
+			s.Logger.Fatalln(err)
+		}
+
+		netTransport = &http.Transport{
+			Dial: (&net.Dialer{
+				Timeout: 5 * time.Second,
+			}).Dial,
+			TLSHandshakeTimeout: 5 * time.Second,
+			TLSClientConfig: &tls.Config{
+				InsecureSkipVerify: true,
+			},
+			Proxy: http.ProxyURL(proxyURL),
+		}
+	} else {
+		netTransport = &http.Transport{
+			Dial: (&net.Dialer{
+				Timeout: 5 * time.Second,
+			}).Dial,
+			TLSHandshakeTimeout: 5 * time.Second,
+			TLSClientConfig: &tls.Config{
+				InsecureSkipVerify: true,
+			},
+		}
 	}
+
 	s.Client = &http.Client{
 		Timeout:   time.Second * 10,
 		Transport: netTransport,
@@ -95,7 +117,7 @@ func NewSuite(logger *log.Logger, wb *Workbench) *Suite {
 	}
 
 	s.Req, err = http.NewRequest(http.MethodGet, s.URL, nil)
-	s.testError(err)
+	s.handleError(err)
 	return &s
 }
 
@@ -166,10 +188,10 @@ func (s *Suite) checkContentType(actual string, expected string) int {
 }
 
 /*
-testError - This function will test the Go errors that come back from other
+handleError - This function will test the Go errors that come back from other
 function calls. This prevents us from having to put the if statement everywhere.
 */
-func (s *Suite) testError(err error) {
+func (s *Suite) handleError(err error) {
 	if err != nil {
 		s.Logger.Fatalln(err)
 	}
@@ -181,10 +203,10 @@ found in a specific test.
 */
 func (s *Suite) printSummary() {
 	if s.ProblemsFound == 0 {
-		//s.Logger.Println("SUCCESS: This test completed successfully")
+		s.Logger.Println("SUCCESS: This test completed successfully\n")
 	} else if s.ProblemsFound == 1 {
-		s.Logger.Println("ERROR:", s.ProblemsFound, "problem found in this test")
+		s.Logger.Println("ERROR:", s.ProblemsFound, "problem found in this test\n")
 	} else if s.ProblemsFound > 1 {
-		s.Logger.Println("ERROR:", s.ProblemsFound, "problems found in this test")
+		s.Logger.Println("ERROR:", s.ProblemsFound, "problems found in this test\n")
 	}
 }
