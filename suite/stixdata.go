@@ -14,7 +14,7 @@ func GenerateIndicatorData() []objects.Indicator {
 	var indicators []objects.Indicator
 
 	i1 := objects.NewIndicator()
-	i1.SetID("indicator--96a2b2aa-4332-4b6f-902b-42b940f4706c")
+	i1.SetID("indicator--1efc6673-9d95-46c3-a09c-c29f926da9af")
 	i1.SetCreated("2018-08-08T01:51:01.123Z")
 	i1.SetModified("2018-08-08T01:51:01.123Z")
 	i1.SetCreatedByRef("identity--abd090f7-5ada-4506-b6d0-5feae5ff90bc")
@@ -55,7 +55,7 @@ func GenerateIndicatorData() []objects.Indicator {
 	indicators = append(indicators, *i14)
 
 	i2 := objects.NewIndicator()
-	i2.SetID("indicator--0baca86a-72a3-484e-8627-fbb0e6906635")
+	i2.SetID("indicator--213dea46-8750-4b8b-b988-aae8f86a62d6")
 	i2.SetCreated("2018-08-08T02:51:02.123Z")
 	i2.SetModified("2018-08-08T02:51:02.123Z")
 	i2.SetCreatedByRef("identity--abd090f7-5ada-4506-b6d0-5feae5ff90bc")
