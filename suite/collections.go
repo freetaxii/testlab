@@ -21,11 +21,13 @@ from the GET request is correct and will echo the output to the logs.
 func (s *Suite) TestCollectionsService() {
 	path := s.APIRoot + "/collections"
 	s.setPath(path)
+	s.EndpointType = "taxii"
 	s.Logger.Println()
 	s.Logger.Println("== Testing Collections Service")
 	if s.Verbose {
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
+
 	s.basicTests()
 	s.getCollectionsOutput()
 }
@@ -36,20 +38,21 @@ func (s *Suite) getCollectionsOutput() {
 		s.Logger.Println("++ This test will check to see if a proper collections resource is returned")
 	}
 
-	var o resources.Collections
-	media := s.TAXIIMediaType + s.MediaVersion
+	media := s.TAXIIMediaType + s.TAXIIVersion
 	s.setAccept(media)
+
+	var o resources.Collections
 	s.Req.SetBasicAuth(s.Username, s.Password)
 	resp, err := s.Client.Do(s.Req)
-	s.testError(err)
+	s.handleError(err)
 	defer resp.Body.Close()
 	s.ProblemsFound += s.checkResponseCode(resp.StatusCode, 200)
 
 	body, err := ioutil.ReadAll(resp.Body)
-	s.testError(err)
+	s.handleError(err)
 
 	jerr := json.Unmarshal(body, &o)
-	s.testError(jerr)
+	s.handleError(jerr)
 
 	var data []byte
 	data, _ = json.MarshalIndent(o, "", "    ")

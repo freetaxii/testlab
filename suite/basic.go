@@ -32,11 +32,18 @@ func (s *Suite) test1() {
 	if s.Verbose {
 		s.Logger.Println("++ This test will send an empty authentication parameter and will check to see if a 401 or 404 status code is returned")
 	}
-	s.setAccept(s.TAXIIMediaType)
+
+	if s.EndpointType == "stix" {
+		media := s.STIXMediaType + s.STIXVersion
+		s.setAccept(media)
+	} else {
+		media := s.TAXIIMediaType + s.TAXIIVersion
+		s.setAccept(media)
+	}
 
 	s.Logger.Debugln("DEBUG:", s.Req)
 	resp, err := s.Client.Do(s.Req)
-	s.testError(err)
+	s.handleError(err)
 	s.Logger.Debugln("DEBUG:", resp)
 	defer resp.Body.Close()
 	s.ProblemsFound += s.checkResponseCode(resp.StatusCode, 401, 404)
@@ -50,12 +57,20 @@ func (s *Suite) test2() {
 	if s.Verbose {
 		s.Logger.Println("++ This test will send an incorrect authentication parameter and will check to see if a 401 or 404 status code is returned")
 	}
-	s.setAccept(s.TAXIIMediaType)
+
+	if s.EndpointType == "stix" {
+		media := s.STIXMediaType + s.STIXVersion
+		s.setAccept(media)
+	} else {
+		media := s.TAXIIMediaType + s.TAXIIVersion
+		s.setAccept(media)
+	}
+
 	s.Req.SetBasicAuth(s.Username, "foo")
 
 	s.Logger.Debugln("DEBUG:", s.Req)
 	resp, err := s.Client.Do(s.Req)
-	s.testError(err)
+	s.handleError(err)
 	s.Logger.Debugln("DEBUG:", resp)
 	defer resp.Body.Close()
 	s.ProblemsFound += s.checkResponseCode(resp.StatusCode, 401, 404)
@@ -69,12 +84,20 @@ func (s *Suite) test3() {
 	if s.Verbose {
 		s.Logger.Println("++ This test will send a correct authentication parameter and will check to see if a 200 status code is returned")
 	}
-	s.setAccept(s.TAXIIMediaType)
+
+	if s.EndpointType == "stix" {
+		media := s.STIXMediaType + s.STIXVersion
+		s.setAccept(media)
+	} else {
+		media := s.TAXIIMediaType + s.TAXIIVersion
+		s.setAccept(media)
+	}
+
 	s.Req.SetBasicAuth(s.Username, s.Password)
 
 	s.Logger.Debugln("DEBUG:", s.Req)
 	resp, err := s.Client.Do(s.Req)
-	s.testError(err)
+	s.handleError(err)
 	s.Logger.Debugln("DEBUG:", resp)
 	defer resp.Body.Close()
 	s.ProblemsFound += s.checkResponseCode(resp.StatusCode, 200)
@@ -88,16 +111,25 @@ func (s *Suite) test4() {
 	if s.Verbose {
 		s.Logger.Println("++ This test will request a URL with a missing trailing slash and check to see if a 404 status code is returned")
 	}
+
+	if s.EndpointType == "stix" {
+		media := s.STIXMediaType + s.STIXVersion
+		s.setAccept(media)
+	} else {
+		media := s.TAXIIMediaType + s.TAXIIVersion
+		s.setAccept(media)
+	}
+
 	// Save original path
 	orig := s.Req.URL.Path
 
 	s.Req.URL.Path = strings.TrimSuffix(s.Req.URL.Path, "/")
-	s.setAccept(s.TAXIIMediaType)
+
 	s.Req.SetBasicAuth(s.Username, s.Password)
 
 	s.Logger.Debugln("DEBUG:", s.Req)
 	resp, err := s.Client.Do(s.Req)
-	s.testError(err)
+	s.handleError(err)
 	s.Logger.Debugln("DEBUG:", resp)
 	defer resp.Body.Close()
 	s.ProblemsFound += s.checkResponseCode(resp.StatusCode, 404)
@@ -115,15 +147,16 @@ func (s *Suite) test5() {
 	if s.Verbose {
 		s.Logger.Println("++ This test will make a series of requests with invalid Accept media types and check to see if a 406 status code is returned")
 	}
-	invalidHeaders := []string{"", "application/foo"}
 
-	for _, v := range invalidHeaders {
+	invalidAcceptHeaders := []string{"", "application/foo"}
+
+	for _, v := range invalidAcceptHeaders {
 		s.setAccept(v)
 		s.Req.SetBasicAuth(s.Username, s.Password)
 
 		s.Logger.Debugln("DEBUG:", s.Req)
 		resp, err := s.Client.Do(s.Req)
-		s.testError(err)
+		s.handleError(err)
 		s.Logger.Debugln("DEBUG:", resp)
 		defer resp.Body.Close()
 		s.ProblemsFound += s.checkResponseCode(resp.StatusCode, 406)
@@ -140,8 +173,14 @@ func (s *Suite) test6() {
 		s.Logger.Println("++ This test will make a series of requests with valid Accept media types and check to see if a 200 status code is returned")
 	}
 
-	m1 := s.TAXIIMediaType
-	m2 := s.TAXIIMediaType + s.MediaVersion
+	var m1, m2 string
+	if s.EndpointType == "stix" {
+		m1 = s.STIXMediaType
+		m2 = s.STIXMediaType + s.STIXVersion
+	} else {
+		m1 = s.TAXIIMediaType
+		m2 = s.TAXIIMediaType + s.TAXIIVersion
+	}
 
 	validHeaders := []string{m1, m2}
 
@@ -151,12 +190,13 @@ func (s *Suite) test6() {
 
 		s.Logger.Debugln("DEBUG:", s.Req)
 		resp, err := s.Client.Do(s.Req)
-		s.testError(err)
+		s.handleError(err)
 		s.Logger.Debugln("DEBUG:", resp)
 		defer resp.Body.Close()
 		s.ProblemsFound += s.checkResponseCode(resp.StatusCode, 200)
 		s.resetHeader()
 	}
+
 	s.printSummary()
 	s.reset()
 }
@@ -167,8 +207,14 @@ func (s *Suite) test7() {
 		s.Logger.Println("++ This test will make a series of requests with valid Accept media types and check to see if the correct media type is returned")
 	}
 
-	m1 := s.TAXIIMediaType
-	m2 := s.TAXIIMediaType + s.MediaVersion
+	var m1, m2 string
+	if s.EndpointType == "stix" {
+		m1 = s.STIXMediaType
+		m2 = s.STIXMediaType + s.STIXVersion
+	} else {
+		m1 = s.TAXIIMediaType
+		m2 = s.TAXIIMediaType + s.TAXIIVersion
+	}
 
 	validHeaders := []string{m1, m2}
 
@@ -178,12 +224,13 @@ func (s *Suite) test7() {
 
 		s.Logger.Debugln("DEBUG:", s.Req)
 		resp, err := s.Client.Do(s.Req)
-		s.testError(err)
+		s.handleError(err)
 		s.Logger.Debugln("DEBUG:", resp)
 		defer resp.Body.Close()
 		s.ProblemsFound += s.checkContentType(resp.Header.Get("Content-type"), m2)
 		s.resetHeader()
 	}
+
 	s.printSummary()
 	s.reset()
 }

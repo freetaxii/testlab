@@ -134,15 +134,21 @@ func main() {
 	b := objects.NewBundle()
 	b.SetID("bundle--e5214f9b-ae28-4692-9394-2fd2ed85d78a")
 
+	counter := make(map[string]int)
 	iData := suite.GenerateIndicatorData()
 	for _, v := range iData {
 		b.AddObject(v)
+		counter[v.ID]++
 		if database {
 			err = ds.AddObject(&v)
 			handleError(err)
-			entry1 := resources.CreateCollectionRecord(c1.ID, v.ID)
-			err = ds.AddTAXIIObject(entry1)
-			handleError(err)
+			// TODO need to first check to see if the STIX ID is already in the collection
+			// This should probably be done in the AddTAXIIObject
+			if counter[v.ID] == 1 {
+				entry1 := resources.CreateCollectionRecord(c1.ID, v.ID)
+				err = ds.AddTAXIIObject(entry1)
+				handleError(err)
+			}
 		}
 	}
 

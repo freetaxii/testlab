@@ -37,13 +37,16 @@ func NewWorkbench() *Workbench {
 }
 
 type Suite struct {
-	Logger         *log.Logger
-	Req            *http.Request
-	Client         *http.Client
-	ProblemsFound  int
-	STIXMediaType  string
-	TAXIIMediaType string
-	MediaVersion   string
+	Logger          *log.Logger
+	Req             *http.Request
+	Client          *http.Client
+	ProblemsFound   int
+	EndpointType    string
+	STIXMediaType   string
+	TAXIIMediaType  string
+	STIXVersion     string
+	TAXIIVersion    string
+	AcceptMediaType string
 	Workbench
 }
 
@@ -111,9 +114,11 @@ func NewSuite(logger *log.Logger, wb *Workbench) *Suite {
 	}
 
 	if s.OldMediaType {
-		s.MediaVersion = ";version=2.0"
+		s.STIXVersion = ";version=2.0"
+		s.TAXIIVersion = ";version=2.0"
 	} else {
-		s.MediaVersion = ";version=2.1"
+		s.STIXVersion = ";version=2.1"
+		s.TAXIIVersion = ";version=2.1"
 	}
 
 	s.Req, err = http.NewRequest(http.MethodGet, s.URL, nil)
@@ -136,6 +141,7 @@ setAccept - This function will set the accept header to the string provided
 */
 func (s *Suite) setAccept(accept string) {
 	s.Req.Header.Add("Accept", accept)
+	s.AcceptMediaType = accept
 }
 
 /*
@@ -156,7 +162,8 @@ func (s *Suite) reset() {
 
 /*
 checkResponseCode - This function will verify the actual HTTP response code
-against one more more possible expected response codes.
+against one more more possible expected response codes. It will return an integer
+representing the number of problems found.
 */
 func (s *Suite) checkResponseCode(actual int, expected ...int) int {
 	if len(expected) >= 2 {
@@ -177,7 +184,8 @@ func (s *Suite) checkResponseCode(actual int, expected ...int) int {
 
 /*
 checkContentType - This function will verify the actual HTTP response
-content-type is correct.
+content-type is correct. It will return an integer representing the number of
+problems found.
 */
 func (s *Suite) checkContentType(actual string, expected string) int {
 	if expected != actual {
@@ -205,8 +213,8 @@ func (s *Suite) printSummary() {
 	if s.ProblemsFound == 0 {
 		s.Logger.Println("SUCCESS: This test completed successfully\n")
 	} else if s.ProblemsFound == 1 {
-		s.Logger.Println("ERROR:", s.ProblemsFound, "problem found in this test\n")
+		s.Logger.Println("FAILURE:", s.ProblemsFound, "problem found in this test\n")
 	} else if s.ProblemsFound > 1 {
-		s.Logger.Println("ERROR:", s.ProblemsFound, "problems found in this test\n")
+		s.Logger.Println("FAILURE:", s.ProblemsFound, "problems found in this test\n")
 	}
 }

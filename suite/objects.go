@@ -7,9 +7,6 @@
 package suite
 
 import (
-	"encoding/json"
-	"io/ioutil"
-
 	"github.com/freetaxii/libstix2/objects"
 )
 
@@ -21,199 +18,146 @@ output from the GET request is correct and will echo the output to the logs.
 func (s *Suite) TestROCollectionObjectsService() {
 	path := s.APIRoot + "/collections/" + s.ReadOnly + "/objects"
 	s.setPath(path)
+	s.EndpointType = "stix"
 	s.Logger.Println()
 	s.Logger.Println("== Testing Read-Only Objects Service")
 	if s.Verbose {
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
+
 	s.basicTests()
+	s.testSortOrder()
 	s.getROCollectionObjectsOutput()
 }
 
-func (s *Suite) getROCollectionObjectsOutput() {
-	s.Logger.Println("== Test O1: Test successful response from read-only objects endpoint")
+/*
+testSortOrder - This method will get all indicators from the
+read-only collection and make sure they are all correct.
+*/
+func (s *Suite) testSortOrder() {
+	s.Logger.Println("== Test O1: Test sort order of response from read-only objects endpoint")
 	if s.Verbose {
-		s.Logger.Println("++ This test will check to see if a proper object resource is returned")
+		s.Logger.Println("++ This test will check to see if the objects are in the right order")
 	}
 
-	i := GenerateIndicatorData()
-	var o objects.Bundle
-	media := s.TAXIIMediaType + s.MediaVersion
+	media := s.STIXMediaType + s.STIXVersion
 	s.setAccept(media)
+
 	s.Req.SetBasicAuth(s.Username, s.Password)
 	resp, err := s.Client.Do(s.Req)
-	s.testError(err)
+	s.handleError(err)
 	defer resp.Body.Close()
 	s.ProblemsFound += s.checkResponseCode(resp.StatusCode, 200)
 
-	body, err := ioutil.ReadAll(resp.Body)
-	s.testError(err)
+	b, err := objects.DecodeBundle(resp.Body)
+	s.handleError(err)
 
-	jerr := json.Unmarshal(body, &o)
-	s.testError(jerr)
+	allIndicators := GenerateIndicatorData()
+	// This first test will only have 2 indicators
+	indicators := []objects.Indicator{allIndicators[4], allIndicators[5]}
 
-	for index, _ := range i {
-		if valid := s.compareCollections(*i[index], o.Objects[index]); valid != true {
-			s.Logger.Println("ERROR: Returned indicator does not match expected")
+	for index, v := range b.Objects {
+
+		// Make a first pass to decode just the object type value. Once we have this
+		// value we can easily make a second pass and decode the rest of the object.
+		stixtype, err := objects.DecodeObjectType(v)
+		if err != nil {
+			// We should probably log the error here
+			continue
+		}
+
+		switch stixtype {
+		case "indicator":
+			o, err := objects.DecodeIndicator(v)
+			if err != nil {
+				// We should probably log the error here
+				continue
+			}
+
+			// Test sort order.
+			if o.ID != indicators[index].ID {
+				s.Logger.Println("ERROR: Sort order for returned data is wrong needs to be ascending")
+				s.ProblemsFound++
+				continue
+			}
 		}
 	}
-
-	var data []byte
-	data, _ = json.MarshalIndent(o, "", "    ")
-	s.Logger.Println("++ Bundle Resource Returned:\n", string(data))
-
 	s.printSummary()
 	s.reset()
 }
 
 /*
-compareIndicators - This method will compare two indicators to make sure they
-are the same. Indicator i1 represent the correct data, i2 represents what was
-retrieved from a server. So we need to make sure that i2 is the same as i1.
+getROCollectionObjectsOutput - This method will get all indicators from the
+read-only collection and make sure they are all correct.
 */
-func (s *Suite) compareIndicators(i1, i2 objects.Indicator) bool {
+func (s *Suite) getROCollectionObjectsOutput() {
+	s.Logger.Println("== Test O2: Test successful response from read-only objects endpoint")
+	if s.Verbose {
+		s.Logger.Println("++ This test will check to see if a proper object resource is returned")
+	}
 
-	// Check Type Value
-	if i2.ObjectType != i1.ObjectType {
-		s.ProblemsFound++
-	} else {
-		if s.Verbose {
-			s.Logger.Println("++ Types Match:", i1.ObjectType, "|", i2.ObjectType)
+	media := s.STIXMediaType + s.STIXVersion
+	s.setAccept(media)
+
+	s.Req.SetBasicAuth(s.Username, s.Password)
+	resp, err := s.Client.Do(s.Req)
+	s.handleError(err)
+	defer resp.Body.Close()
+	s.ProblemsFound += s.checkResponseCode(resp.StatusCode, 200)
+
+	b, err := objects.DecodeBundle(resp.Body)
+	s.handleError(err)
+
+	count := 0
+	allIndicators := GenerateIndicatorData()
+
+	// This first test will only have 2 indicators, the newest of each version
+	indicators := []objects.Indicator{allIndicators[4], allIndicators[5]}
+
+	for index, v := range b.Objects {
+
+		// Make a first pass to decode just the object type value. Once we have this
+		// value we can easily make a second pass and decode the rest of the object.
+		stixtype, err := objects.DecodeObjectType(v)
+		if err != nil {
+			// We should probably log the error here
+			continue
 		}
-	}
 
-	// Check Spec Version Value
-	if i2.SpecVersion != i1.SpecVersion {
-		s.ProblemsFound++
-	} else {
-		if s.Verbose {
-			s.Logger.Println("++ Spec Versions Match:", i1.SpecVersion, "|", i2.SpecVersion)
+		switch stixtype {
+		case "indicator":
+			o, err := objects.DecodeIndicator(v)
+			if err != nil {
+				// We should probably log the error here
+				continue
+			}
+
+			if valid, problems, details := indicators[index].Compare(o); valid != true {
+				s.ProblemsFound += problems
+				if s.Verbose {
+					for _, v := range details {
+						s.Logger.Println(v)
+					}
+				}
+				s.Logger.Println("ERROR: Returned indicator", o.ID, "does not match expected")
+			} else {
+				if s.Verbose {
+					for _, v := range details {
+						s.Logger.Println(v)
+					}
+				}
+				s.Logger.Println("SUCCESS: Returned indicator", o.ID, "matches expected")
+			}
 		}
+
+		count++
 	}
 
-	// Check ID Value
-	if i2.ID != i1.ID {
-		s.ProblemsFound++
-	} else {
-		if s.Verbose {
-			s.Logger.Println("++ IDs Match:", i1.ID, "|", i2.ID)
-		}
-	}
+	s.Logger.Println("++ Number objects returned:", count)
 
-	// Check Created Value
-	if i2.Created != i1.Created {
-		s.ProblemsFound++
-	} else {
-		if s.Verbose {
-			s.Logger.Println("++ Created Dates Match:", i1.Created, "|", i2.Created)
-		}
-	}
+	data, _ := b.EncodeToString()
+	s.Logger.Println("++ Bundle Resource Returned:\n", data)
 
-	// Check Modified Value
-	if i2.Modified != i1.Modified {
-		s.ProblemsFound++
-	} else {
-		if s.Verbose {
-			s.Logger.Println("++ Modified Dates Match:", i1.Modified, "|", i2.Modified)
-		}
-	}
-
-	// Check Name Value
-	if i2.Name != i1.Name {
-		s.ProblemsFound++
-	} else {
-		if s.Verbose {
-			s.Logger.Println("++ Names Match:", i1.Name, "|", i2.Name)
-		}
-	}
-
-	// Check Description Value
-	if i2.Description != i1.Description {
-		s.ProblemsFound++
-	} else {
-		if s.Verbose {
-			s.Logger.Println("++ Descriptions Match:", i1.Description, "|", i2.Description)
-		}
-	}
-
-	// Check Indicator Types Property Length
-	if len(i2.IndicatorTypes) != len(i1.IndicatorTypes) {
-		s.ProblemsFound++
-	} else {
-		if s.Verbose {
-			s.Logger.Println("++ Indicator Types Length Match:", len(i1.IndicatorTypes), "|", len(i2.IndicatorTypes))
-		}
-	}
-
-	// Check Indicator Types values
-	if i2.IndicatorTypes[0] != i1.IndicatorTypes[0] {
-		s.ProblemsFound++
-	} else {
-		if s.Verbose {
-			s.Logger.Println("++ Indicator Types Match:", i1.IndicatorTypes[0], "|", i2.IndicatorTypes[0])
-		}
-	}
-
-	// Check Pattern Value
-	if i2.Pattern != i1.Pattern {
-		s.ProblemsFound++
-	} else {
-		if s.Verbose {
-			s.Logger.Println("++ Patterns Match:", i1.Pattern, "|", i2.Pattern)
-		}
-	}
-
-	// Check ValidFrom Value
-	if i2.ValidFrom != i1.ValidFrom {
-		s.ProblemsFound++
-	} else {
-		if s.Verbose {
-			s.Logger.Println("++ ValidFrom Values Match:", i1.ValidFrom, "|", i2.ValidFrom)
-		}
-	}
-
-	// Check ValidUntil Value
-	if i2.ValidUntil != i1.ValidUntil {
-		s.ProblemsFound++
-	} else {
-		if s.Verbose {
-			s.Logger.Println("++ ValidUntil Values Match:", i1.ValidUntil, "|", i2.ValidUntil)
-		}
-	}
-
-	// Check Kill Chain Phases Property Length
-	if len(i2.KillChainPhases) != len(i1.KillChainPhases) {
-		s.ProblemsFound++
-	} else {
-		if s.Verbose {
-			s.Logger.Println("++ Kill Chain Phases Length Match:", len(i1.KillChainPhases), "|", len(i2.KillChainPhases))
-		}
-	}
-
-	// Check Kill Chain Phases values
-	if i2.KillChainPhases[0].KillChainName != i1.KillChainPhases[0].KillChainName {
-		s.ProblemsFound++
-	} else {
-		if s.Verbose {
-			s.Logger.Println("++ Kill Chain Phases Match:", i1.KillChainPhases[0].KillChainName, "|", i2.KillChainPhases[0].KillChainName)
-		}
-	}
-
-	// Check Kill Chain Phases values
-	if i2.KillChainPhases[0].PhaseName != i1.KillChainPhases[0].PhaseName {
-		s.ProblemsFound++
-	} else {
-		if s.Verbose {
-			s.Logger.Println("++ Kill Chain Phases Match:", i1.KillChainPhases[0].PhaseName, "|", i2.KillChainPhases[0].PhaseName)
-		}
-	}
-
-	if s.ProblemsFound > 0 {
-		s.Logger.Printf("ERROR: Returned indicator does not match expected value")
-		s.Logger.Printf("ERROR: Expected %s", i1)
-		s.Logger.Printf("ERROR: Got %s", i2)
-		return false
-	}
-
-	return true
+	s.printSummary()
+	s.reset()
 }

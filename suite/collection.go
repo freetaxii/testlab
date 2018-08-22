@@ -21,11 +21,13 @@ output from the GET request is correct and will echo the output to the logs.
 func (s *Suite) TestROCollectionService() {
 	path := s.APIRoot + "/collections/" + s.ReadOnly
 	s.setPath(path)
+	s.EndpointType = "taxii"
 	s.Logger.Println()
 	s.Logger.Println("== Testing Read-Only Collection Service")
 	if s.Verbose {
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
+
 	s.basicTests()
 	s.getROCollectionOutput()
 }
@@ -36,21 +38,23 @@ func (s *Suite) getROCollectionOutput() {
 		s.Logger.Println("++ This test will check to see if a proper read-only collection resource is returned")
 	}
 
+	media := s.TAXIIMediaType + s.TAXIIVersion
+	s.setAccept(media)
+
 	ro := GenerateROCollection()
 	var o resources.Collection
-	media := s.TAXIIMediaType + s.MediaVersion
-	s.setAccept(media)
+
 	s.Req.SetBasicAuth(s.Username, s.Password)
 	resp, err := s.Client.Do(s.Req)
-	s.testError(err)
+	s.handleError(err)
 	defer resp.Body.Close()
 	s.ProblemsFound += s.checkResponseCode(resp.StatusCode, 200)
 
 	body, err := ioutil.ReadAll(resp.Body)
-	s.testError(err)
+	s.handleError(err)
 
 	jerr := json.Unmarshal(body, &o)
-	s.testError(jerr)
+	s.handleError(jerr)
 
 	if valid := s.compareCollections(*ro, o); valid != true {
 		s.Logger.Println("ERROR: Returned collection does not match expected read-only collection")
@@ -72,11 +76,13 @@ output from the GET request is correct and will echo the output to the logs.
 func (s *Suite) TestWOCollectionService() {
 	path := s.APIRoot + "/collections/" + s.WriteOnly
 	s.setPath(path)
+	s.EndpointType = "taxii"
 	s.Logger.Println()
 	s.Logger.Println("== Testing Write-Only Collection Service")
 	if s.Verbose {
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
+
 	s.basicTests()
 	s.getWOCollectionOutput()
 }
@@ -87,21 +93,23 @@ func (s *Suite) getWOCollectionOutput() {
 		s.Logger.Println("++ This test will check to see if a proper write-only collection resource is returned")
 	}
 
+	media := s.TAXIIMediaType + s.TAXIIVersion
+	s.setAccept(media)
+
 	wo := GenerateWOCollection()
 	var o resources.Collection
-	media := s.TAXIIMediaType + s.MediaVersion
-	s.setAccept(media)
+
 	s.Req.SetBasicAuth(s.Username, s.Password)
 	resp, err := s.Client.Do(s.Req)
-	s.testError(err)
+	s.handleError(err)
 	defer resp.Body.Close()
 	s.ProblemsFound += s.checkResponseCode(resp.StatusCode, 200)
 
 	body, err := ioutil.ReadAll(resp.Body)
-	s.testError(err)
+	s.handleError(err)
 
 	jerr := json.Unmarshal(body, &o)
-	s.testError(jerr)
+	s.handleError(jerr)
 
 	if valid := s.compareCollections(*wo, o); valid != true {
 		s.Logger.Println("ERROR: Returned collection does not match expected write-only collection")
@@ -123,6 +131,7 @@ output from the GET request is correct and will echo the output to the logs.
 func (s *Suite) TestRWCollectionService() {
 	path := s.APIRoot + "/collections/" + s.ReadWrite
 	s.setPath(path)
+	s.EndpointType = "taxii"
 	s.Logger.Println()
 	s.Logger.Println("== Testing Read-Write Collection Service")
 	if s.Verbose {
@@ -139,21 +148,23 @@ func (s *Suite) getRWCollectionOutput() {
 		s.Logger.Println("++ This test will check to see if a proper read-write collection resource is returned")
 	}
 
+	media := s.TAXIIMediaType + s.TAXIIVersion
+	s.setAccept(media)
+
 	rw := GenerateRWCollection()
 	var o resources.Collection
-	media := s.TAXIIMediaType + s.MediaVersion
-	s.setAccept(media)
+
 	s.Req.SetBasicAuth(s.Username, s.Password)
 	resp, err := s.Client.Do(s.Req)
-	s.testError(err)
+	s.handleError(err)
 	defer resp.Body.Close()
 	s.ProblemsFound += s.checkResponseCode(resp.StatusCode, 200)
 
 	body, err := ioutil.ReadAll(resp.Body)
-	s.testError(err)
+	s.handleError(err)
 
 	jerr := json.Unmarshal(body, &o)
-	s.testError(jerr)
+	s.handleError(jerr)
 
 	if valid := s.compareCollections(*rw, o); valid != true {
 		s.Logger.Println("ERROR: Returned collection does not match expected read-write collection")
