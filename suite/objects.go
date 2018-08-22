@@ -25,7 +25,7 @@ func (s *Suite) TestROCollectionObjectsService() {
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
 
-	s.basicTests()
+	s.basicEndpointTests()
 	s.testSortOrder()
 	s.getROCollectionObjectsOutput()
 }

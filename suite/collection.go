@@ -28,7 +28,7 @@ func (s *Suite) TestROCollectionService() {
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
 
-	s.basicTests()
+	s.basicEndpointTests()
 	s.getROCollectionOutput()
 }
 
@@ -83,7 +83,7 @@ func (s *Suite) TestWOCollectionService() {
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
 
-	s.basicTests()
+	s.basicEndpointTests()
 	s.getWOCollectionOutput()
 }
 
@@ -138,7 +138,7 @@ func (s *Suite) TestRWCollectionService() {
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
 
-	s.basicTests()
+	s.basicEndpointTests()
 	s.getRWCollectionOutput()
 }
 

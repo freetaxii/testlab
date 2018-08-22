@@ -28,7 +28,7 @@ func (s *Suite) TestCollectionsService() {
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
 
-	s.basicTests()
+	s.basicEndpointTests()
 	s.getCollectionsOutput()
 }
 

@@ -27,7 +27,7 @@ func (s *Suite) TestDiscoveryService() {
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
 
-	s.basicTests()
+	s.basicEndpointTests()
 	s.getDiscoveryOutput()
 }
 

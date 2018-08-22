@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func (s *Suite) basicTests() {
+func (s *Suite) basicEndpointTests() {
 	// Test no authentication
 	// Test failed authentication
 	// Test successful authentication
