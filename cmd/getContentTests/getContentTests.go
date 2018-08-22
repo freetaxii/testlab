@@ -62,7 +62,7 @@ func main() {
 	// s.TestROCollectionService()
 	// s.TestWOCollectionService()
 	// s.TestRWCollectionService()
-	s.TestROCollectionObjectsService()
+	s.TestObjectsServiceROCollection()
 }
 
 // --------------------------------------------------

@@ -18,17 +18,17 @@ func (s *Suite) basicEndpointTests() {
 	// Test each invalid accept header
 	// Test each valid accept header
 	// Test content-type header
-	s.test1()
-	s.test2()
-	s.test3()
-	s.test4()
-	s.test5()
-	s.test6()
-	s.test7()
+	s.testBE01()
+	s.testBE02()
+	s.testBE03()
+	s.testBE04()
+	s.testBE05()
+	s.testBE06()
+	s.testBE07()
 }
 
-func (s *Suite) test1() {
-	s.Logger.Println("== Test B1: No authentication test")
+func (s *Suite) testBE01() {
+	s.Logger.Println("== Test BE-01: No authentication test")
 	if s.Verbose {
 		s.Logger.Println("++ This test will send an empty authentication parameter and will check to see if a 401 or 404 status code is returned")
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
@@ -41,11 +41,8 @@ func (s *Suite) test1() {
 		media := s.TAXIIMediaType + s.TAXIIVersion
 		s.setAccept(media)
 	}
-
-	s.Logger.Debugln("DEBUG:", s.Req)
 	resp, err := s.Client.Do(s.Req)
 	s.handleError(err)
-	s.Logger.Debugln("DEBUG:", resp)
 	defer resp.Body.Close()
 	s.ProblemsFound += s.checkResponseCode(resp.StatusCode, 401, 404)
 
@@ -53,8 +50,8 @@ func (s *Suite) test1() {
 	s.reset()
 }
 
-func (s *Suite) test2() {
-	s.Logger.Println("== Test B2: Wrong authentication test")
+func (s *Suite) testBE02() {
+	s.Logger.Println("== Test BE-02: Wrong authentication test")
 	if s.Verbose {
 		s.Logger.Println("++ This test will send an incorrect authentication parameter and will check to see if a 401 or 404 status code is returned")
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
@@ -69,11 +66,8 @@ func (s *Suite) test2() {
 	}
 
 	s.Req.SetBasicAuth(s.Username, "foo")
-
-	s.Logger.Debugln("DEBUG:", s.Req)
 	resp, err := s.Client.Do(s.Req)
 	s.handleError(err)
-	s.Logger.Debugln("DEBUG:", resp)
 	defer resp.Body.Close()
 	s.ProblemsFound += s.checkResponseCode(resp.StatusCode, 401, 404)
 
@@ -81,8 +75,8 @@ func (s *Suite) test2() {
 	s.reset()
 }
 
-func (s *Suite) test3() {
-	s.Logger.Println("== Test B3: Test successful authentication")
+func (s *Suite) testBE03() {
+	s.Logger.Println("== Test BE-03: Test successful authentication")
 	if s.Verbose {
 		s.Logger.Println("++ This test will send a correct authentication parameter and will check to see if a 200 status code is returned")
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
@@ -97,11 +91,8 @@ func (s *Suite) test3() {
 	}
 
 	s.Req.SetBasicAuth(s.Username, s.Password)
-
-	s.Logger.Debugln("DEBUG:", s.Req)
 	resp, err := s.Client.Do(s.Req)
 	s.handleError(err)
-	s.Logger.Debugln("DEBUG:", resp)
 	defer resp.Body.Close()
 	s.ProblemsFound += s.checkResponseCode(resp.StatusCode, 200)
 
@@ -109,8 +100,8 @@ func (s *Suite) test3() {
 	s.reset()
 }
 
-func (s *Suite) test4() {
-	s.Logger.Println("== Test B4: Test missing trailing slash")
+func (s *Suite) testBE04() {
+	s.Logger.Println("== Test BE-04: Test missing trailing slash")
 	if s.Verbose {
 		s.Logger.Println("++ This test will request a URL with a missing trailing slash and check to see if a 404 status code is returned")
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
@@ -130,24 +121,20 @@ func (s *Suite) test4() {
 	s.Req.URL.Path = strings.TrimSuffix(s.Req.URL.Path, "/")
 
 	s.Req.SetBasicAuth(s.Username, s.Password)
-
-	s.Logger.Debugln("DEBUG:", s.Req)
 	resp, err := s.Client.Do(s.Req)
 	s.handleError(err)
-	s.Logger.Debugln("DEBUG:", resp)
 	defer resp.Body.Close()
 	s.ProblemsFound += s.checkResponseCode(resp.StatusCode, 404)
 
-	s.printSummary()
-
 	// Set it back
 	s.Req.URL.Path = orig
-	s.reset()
 
+	s.printSummary()
+	s.reset()
 }
 
-func (s *Suite) test5() {
-	s.Logger.Println("== Test B5: Test invalid media types in Accept")
+func (s *Suite) testBE05() {
+	s.Logger.Println("== Test BE-05: Test invalid media types in Accept")
 	if s.Verbose {
 		s.Logger.Println("++ This test will make a series of requests with invalid Accept media types and check to see if a 406 status code is returned")
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
@@ -159,10 +146,8 @@ func (s *Suite) test5() {
 		s.setAccept(v)
 		s.Req.SetBasicAuth(s.Username, s.Password)
 
-		s.Logger.Debugln("DEBUG:", s.Req)
 		resp, err := s.Client.Do(s.Req)
 		s.handleError(err)
-		s.Logger.Debugln("DEBUG:", resp)
 		defer resp.Body.Close()
 		s.ProblemsFound += s.checkResponseCode(resp.StatusCode, 406)
 		s.resetHeader()
@@ -172,8 +157,8 @@ func (s *Suite) test5() {
 	s.reset()
 }
 
-func (s *Suite) test6() {
-	s.Logger.Println("== Test B6: Test valid media types in Accept")
+func (s *Suite) testBE06() {
+	s.Logger.Println("== Test BE-06: Test valid media types in Accept")
 	if s.Verbose {
 		s.Logger.Println("++ This test will make a series of requests with valid Accept media types and check to see if a 200 status code is returned")
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
@@ -194,10 +179,8 @@ func (s *Suite) test6() {
 		s.setAccept(v)
 		s.Req.SetBasicAuth(s.Username, s.Password)
 
-		s.Logger.Debugln("DEBUG:", s.Req)
 		resp, err := s.Client.Do(s.Req)
 		s.handleError(err)
-		s.Logger.Debugln("DEBUG:", resp)
 		defer resp.Body.Close()
 		s.ProblemsFound += s.checkResponseCode(resp.StatusCode, 200)
 		s.resetHeader()
@@ -207,8 +190,8 @@ func (s *Suite) test6() {
 	s.reset()
 }
 
-func (s *Suite) test7() {
-	s.Logger.Println("== Test B7: Test valid media type in Content-type")
+func (s *Suite) testBE07() {
+	s.Logger.Println("== Test BE-07: Test valid media type in Content-type")
 	if s.Verbose {
 		s.Logger.Println("++ This test will make a series of requests with valid Accept media types and check to see if the correct media type is returned")
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
@@ -229,10 +212,8 @@ func (s *Suite) test7() {
 		s.setAccept(v)
 		s.Req.SetBasicAuth(s.Username, s.Password)
 
-		s.Logger.Debugln("DEBUG:", s.Req)
 		resp, err := s.Client.Do(s.Req)
 		s.handleError(err)
-		s.Logger.Debugln("DEBUG:", resp)
 		defer resp.Body.Close()
 		s.ProblemsFound += s.checkContentType(resp.Header.Get("Content-type"), m2)
 		s.resetHeader()
