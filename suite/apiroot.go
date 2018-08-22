@@ -19,13 +19,11 @@ against the API Root endpoint. It will also check to make sure the output
 from the GET request is correct and will echo the output to the logs.
 */
 func (s *Suite) TestAPIRootService() {
-	s.setPath(s.APIRoot)
-	s.EndpointType = "taxii"
 	s.Logger.Println()
 	s.Logger.Println("== Testing API Root Service")
-	if s.Verbose {
-		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
-	}
+
+	s.setPath(s.APIRoot)
+	s.EndpointType = "taxii"
 
 	s.basicEndpointTests()
 	s.getAPIRootOutput()
@@ -35,6 +33,7 @@ func (s *Suite) getAPIRootOutput() {
 	s.Logger.Println("== Test A1: Test successful response from api root endpoint")
 	if s.Verbose {
 		s.Logger.Println("++ This test will check to see if a proper API root resource is returned")
+		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
 
 	media := s.TAXIIMediaType + s.TAXIIVersion

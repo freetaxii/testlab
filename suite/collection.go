@@ -19,14 +19,12 @@ against the Read-Only Collection endpoint. It will also check to make sure the
 output from the GET request is correct and will echo the output to the logs.
 */
 func (s *Suite) TestROCollectionService() {
-	path := s.APIRoot + "/collections/" + s.ReadOnly
-	s.setPath(path)
-	s.EndpointType = "taxii"
 	s.Logger.Println()
 	s.Logger.Println("== Testing Read-Only Collection Service")
-	if s.Verbose {
-		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
-	}
+
+	path := s.APIRoot + "collections/" + s.ReadOnly + "/"
+	s.setPath(path)
+	s.EndpointType = "taxii"
 
 	s.basicEndpointTests()
 	s.getROCollectionOutput()
@@ -36,6 +34,7 @@ func (s *Suite) getROCollectionOutput() {
 	s.Logger.Println("== Test C2: Test successful response from read-only collection endpoint")
 	if s.Verbose {
 		s.Logger.Println("++ This test will check to see if a proper read-only collection resource is returned")
+		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
 
 	media := s.TAXIIMediaType + s.TAXIIVersion
@@ -74,14 +73,12 @@ against the Write-Only Collection endpoint. It will also check to make sure the
 output from the GET request is correct and will echo the output to the logs.
 */
 func (s *Suite) TestWOCollectionService() {
-	path := s.APIRoot + "/collections/" + s.WriteOnly
-	s.setPath(path)
-	s.EndpointType = "taxii"
 	s.Logger.Println()
 	s.Logger.Println("== Testing Write-Only Collection Service")
-	if s.Verbose {
-		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
-	}
+
+	path := s.APIRoot + "collections/" + s.WriteOnly + "/"
+	s.setPath(path)
+	s.EndpointType = "taxii"
 
 	s.basicEndpointTests()
 	s.getWOCollectionOutput()
@@ -91,6 +88,7 @@ func (s *Suite) getWOCollectionOutput() {
 	s.Logger.Println("== Test C3: Test successful response from write-only collection endpoint")
 	if s.Verbose {
 		s.Logger.Println("++ This test will check to see if a proper write-only collection resource is returned")
+		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
 
 	media := s.TAXIIMediaType + s.TAXIIVersion
@@ -129,14 +127,12 @@ against the Read-Write Collection endpoint. It will also check to make sure the
 output from the GET request is correct and will echo the output to the logs.
 */
 func (s *Suite) TestRWCollectionService() {
-	path := s.APIRoot + "/collections/" + s.ReadWrite
-	s.setPath(path)
-	s.EndpointType = "taxii"
 	s.Logger.Println()
 	s.Logger.Println("== Testing Read-Write Collection Service")
-	if s.Verbose {
-		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
-	}
+
+	path := s.APIRoot + "collections/" + s.ReadWrite + "/"
+	s.setPath(path)
+	s.EndpointType = "taxii"
 
 	s.basicEndpointTests()
 	s.getRWCollectionOutput()
@@ -146,6 +142,7 @@ func (s *Suite) getRWCollectionOutput() {
 	s.Logger.Println("== Test C4: Test successful response from read-write collection endpoint")
 	if s.Verbose {
 		s.Logger.Println("++ This test will check to see if a proper read-write collection resource is returned")
+		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
 
 	media := s.TAXIIMediaType + s.TAXIIVersion

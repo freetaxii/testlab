@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/gologme/log"
@@ -19,6 +20,7 @@ import (
 
 type Workbench struct {
 	Verbose      bool
+	Debug        bool
 	Username     string
 	Password     string
 	URL          string
@@ -100,6 +102,7 @@ func NewSuite(logger *log.Logger, wb *Workbench) *Suite {
 	s.Username = wb.Username
 	s.Password = wb.Password
 	s.Verbose = wb.Verbose
+	s.Debug = wb.Debug
 	s.OldMediaType = wb.OldMediaType
 	s.ReadOnly = wb.ReadOnly
 	s.WriteOnly = wb.WriteOnly
@@ -133,7 +136,14 @@ func NewSuite(logger *log.Logger, wb *Workbench) *Suite {
 // ----------------------------------------------------------------------
 
 func (s *Suite) setPath(p string) {
-	s.Req.URL.Path = "/" + p + "/"
+	if !strings.HasPrefix(s.Req.URL.Path, "/") {
+		p = "/" + p
+	}
+
+	if !strings.HasSuffix(s.Req.URL.Path, "/") {
+		p = p + "/"
+	}
+	s.Req.URL.Path = p
 }
 
 /*
@@ -152,11 +162,28 @@ func (s *Suite) resetHeader() {
 }
 
 /*
+resetQueryParams - This method will clear out all query parameters from the
+HTTP header
+*/
+func (s *Suite) resetQueryParams() {
+	s.Req.URL.RawQuery = ""
+}
+
+/*
+
+ */
+func (s *Suite) makePrettyQueryParams() string {
+	pretty, _ := url.QueryUnescape(s.Req.URL.RawQuery)
+	return pretty
+}
+
+/*
 reset - This function will clear out all settings from the HTTP header and the
 problems found
 */
 func (s *Suite) reset() {
 	s.resetHeader()
+	s.resetQueryParams()
 	s.ProblemsFound = 0
 }
 
@@ -168,16 +195,16 @@ representing the number of problems found.
 func (s *Suite) checkResponseCode(actual int, expected ...int) int {
 	if len(expected) >= 2 {
 		if expected[0] != actual && expected[1] != actual {
-			s.Logger.Printf("ERROR: Expected HTTP response code %d. Got %d\n", expected[0], actual)
+			s.Logger.Printf("-- ERROR: Expected HTTP response code %d. Got %d\n", expected[0], actual)
 			return 1
 		}
 	} else if len(expected) == 1 {
 		if expected[0] != actual {
-			s.Logger.Printf("ERROR: Expected HTTP response code %d. Got %d\n", expected[0], actual)
+			s.Logger.Printf("-- ERROR: Expected HTTP response code %d. Got %d\n", expected[0], actual)
 			return 1
 		}
 	} else {
-		s.Logger.Fatalln("FATAL: Missing expected HTTP code")
+		s.Logger.Fatalln("-- FATAL: Missing expected HTTP code")
 	}
 	return 0
 }
@@ -189,7 +216,7 @@ problems found.
 */
 func (s *Suite) checkContentType(actual string, expected string) int {
 	if expected != actual {
-		s.Logger.Printf("ERROR: Expected HTTP content type %s. Got %s\n", expected, actual)
+		s.Logger.Printf("-- ERROR: Expected HTTP content type %s. Got %s\n", expected, actual)
 		return 1
 	}
 	return 0
@@ -211,10 +238,10 @@ found in a specific test.
 */
 func (s *Suite) printSummary() {
 	if s.ProblemsFound == 0 {
-		s.Logger.Println("SUCCESS: This test completed successfully\n")
+		s.Logger.Println("== SUCCESS: This test completed successfully\n")
 	} else if s.ProblemsFound == 1 {
-		s.Logger.Println("FAILURE:", s.ProblemsFound, "problem found in this test\n")
+		s.Logger.Println("== FAILURE:", s.ProblemsFound, "problem found in this test\n")
 	} else if s.ProblemsFound > 1 {
-		s.Logger.Println("FAILURE:", s.ProblemsFound, "problems found in this test\n")
+		s.Logger.Println("== FAILURE:", s.ProblemsFound, "problems found in this test\n")
 	}
 }

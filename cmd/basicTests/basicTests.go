@@ -9,6 +9,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/freetaxii/testlab/suite"
 	"github.com/gologme/log"
@@ -19,7 +20,7 @@ import (
 // populated by the Makefile and uses the Git Head hash as its identifier.
 // These variables are used in the console output for --version and --help.
 var (
-	Version = "0.3"
+	Version = "0.4"
 	Build   string
 )
 
@@ -100,6 +101,20 @@ func processCommandLineFlags(wb *suite.Workbench) {
 	wb.ReadOnly = *sOptReadOnly
 	wb.WriteOnly = *sOptWriteOnly
 	wb.ReadWrite = *sOptReadWrite
+
+	if !strings.HasPrefix(wb.Discovery, "/") {
+		wb.Discovery = "/" + wb.Discovery
+	}
+	if !strings.HasSuffix(wb.Discovery, "/") {
+		wb.Discovery = wb.Discovery + "/"
+	}
+
+	if !strings.HasPrefix(wb.APIRoot, "/") {
+		wb.APIRoot = "/" + wb.APIRoot
+	}
+	if !strings.HasSuffix(wb.APIRoot, "/") {
+		wb.APIRoot = wb.APIRoot + "/"
+	}
 }
 
 /*

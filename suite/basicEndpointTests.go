@@ -31,6 +31,7 @@ func (s *Suite) test1() {
 	s.Logger.Println("== Test B1: No authentication test")
 	if s.Verbose {
 		s.Logger.Println("++ This test will send an empty authentication parameter and will check to see if a 401 or 404 status code is returned")
+		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
 
 	if s.EndpointType == "stix" {
@@ -56,6 +57,7 @@ func (s *Suite) test2() {
 	s.Logger.Println("== Test B2: Wrong authentication test")
 	if s.Verbose {
 		s.Logger.Println("++ This test will send an incorrect authentication parameter and will check to see if a 401 or 404 status code is returned")
+		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
 
 	if s.EndpointType == "stix" {
@@ -83,6 +85,7 @@ func (s *Suite) test3() {
 	s.Logger.Println("== Test B3: Test successful authentication")
 	if s.Verbose {
 		s.Logger.Println("++ This test will send a correct authentication parameter and will check to see if a 200 status code is returned")
+		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
 
 	if s.EndpointType == "stix" {
@@ -110,6 +113,7 @@ func (s *Suite) test4() {
 	s.Logger.Println("== Test B4: Test missing trailing slash")
 	if s.Verbose {
 		s.Logger.Println("++ This test will request a URL with a missing trailing slash and check to see if a 404 status code is returned")
+		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
 
 	if s.EndpointType == "stix" {
@@ -146,6 +150,7 @@ func (s *Suite) test5() {
 	s.Logger.Println("== Test B5: Test invalid media types in Accept")
 	if s.Verbose {
 		s.Logger.Println("++ This test will make a series of requests with invalid Accept media types and check to see if a 406 status code is returned")
+		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
 
 	invalidAcceptHeaders := []string{"", "application/foo"}
@@ -171,6 +176,7 @@ func (s *Suite) test6() {
 	s.Logger.Println("== Test B6: Test valid media types in Accept")
 	if s.Verbose {
 		s.Logger.Println("++ This test will make a series of requests with valid Accept media types and check to see if a 200 status code is returned")
+		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
 
 	var m1, m2 string
@@ -205,6 +211,7 @@ func (s *Suite) test7() {
 	s.Logger.Println("== Test B7: Test valid media type in Content-type")
 	if s.Verbose {
 		s.Logger.Println("++ This test will make a series of requests with valid Accept media types and check to see if the correct media type is returned")
+		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
 
 	var m1, m2 string

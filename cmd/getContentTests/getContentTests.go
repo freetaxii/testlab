@@ -9,6 +9,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/freetaxii/testlab/suite"
 	"github.com/gologme/log"
@@ -19,7 +20,7 @@ import (
 // populated by the Makefile and uses the Git Head hash as its identifier.
 // These variables are used in the console output for --version and --help.
 var (
-	Version = "0.3"
+	Version = "0.4"
 	Build   string
 )
 
@@ -36,6 +37,7 @@ var (
 	sOptPassword     = getopt.StringLong("password", 'p', "", "Password", "string")
 	bOptOldMediaType = getopt.BoolLong("oldmediatype", 0, "Use 2.0 media types")
 	bOptVerbose      = getopt.BoolLong("verbose", 0, "Enable verbose output")
+	bOptDebug        = getopt.BoolLong("debug", 0, "Enable debug output")
 	bOptHelp         = getopt.BoolLong("help", 0, "Help")
 	bOptVer          = getopt.BoolLong("version", 0, "Version")
 )
@@ -100,10 +102,25 @@ func processCommandLineFlags(wb *suite.Workbench) {
 	wb.Username = *sOptUsername
 	wb.Password = *sOptPassword
 	wb.Verbose = *bOptVerbose
+	wb.Debug = *bOptDebug
 	wb.OldMediaType = *bOptOldMediaType
 	wb.ReadOnly = *sOptReadOnly
 	wb.WriteOnly = *sOptWriteOnly
 	wb.ReadWrite = *sOptReadWrite
+
+	if !strings.HasPrefix(wb.Discovery, "/") {
+		wb.Discovery = "/" + wb.Discovery
+	}
+	if !strings.HasSuffix(wb.Discovery, "/") {
+		wb.Discovery = wb.Discovery + "/"
+	}
+
+	if !strings.HasPrefix(wb.APIRoot, "/") {
+		wb.APIRoot = "/" + wb.APIRoot
+	}
+	if !strings.HasSuffix(wb.APIRoot, "/") {
+		wb.APIRoot = wb.APIRoot + "/"
+	}
 }
 
 /*

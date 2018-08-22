@@ -19,13 +19,11 @@ against the Discovery endpoint. It will also check to make sure the output
 from the GET request is correct and will echo the output to the logs.
 */
 func (s *Suite) TestDiscoveryService() {
-	s.setPath(s.Discovery)
-	s.EndpointType = "taxii"
 	s.Logger.Println()
 	s.Logger.Println("== Testing Discovery Service")
-	if s.Verbose {
-		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
-	}
+
+	s.setPath(s.Discovery)
+	s.EndpointType = "taxii"
 
 	s.basicEndpointTests()
 	s.getDiscoveryOutput()
@@ -35,6 +33,7 @@ func (s *Suite) getDiscoveryOutput() {
 	s.Logger.Println("== Test D1: Test successful response from discovery endpoint")
 	if s.Verbose {
 		s.Logger.Println("++ This test will check to see if a proper discovery resource is returned")
+		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
 
 	media := s.TAXIIMediaType + s.TAXIIVersion
