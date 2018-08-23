@@ -33,6 +33,25 @@ func (s *Suite) basicFilteringTestsObjectsRO() {
 	s.testFT10([]objects.Indicator{allIndicators[4], allIndicators[5]})
 }
 
+func (s *Suite) basicFilteringTestsObjectRO() {
+	// Test no filtering
+	// Test version filtering using ALL
+	// Test version filtering using FIRST
+	// Test version filtering using LAST
+	// Test version filtering using FIRST,LAST
+	// Test version filtering using VERSION
+	// Test version filtering using LAST,FIRST,VERSION
+	allIndicators := GenerateIndicatorData()
+
+	s.testFT01([]objects.Indicator{allIndicators[4]})
+	s.testFT02([]objects.Indicator{allIndicators[0], allIndicators[1], allIndicators[2], allIndicators[3], allIndicators[4]})
+	s.testFT03([]objects.Indicator{allIndicators[0]})
+	s.testFT04([]objects.Indicator{allIndicators[4]})
+	s.testFT05([]objects.Indicator{allIndicators[0], allIndicators[4]})
+	s.testFT06([]objects.Indicator{allIndicators[1]})
+	s.testFT07([]objects.Indicator{allIndicators[0], allIndicators[2], allIndicators[4]})
+}
+
 /*
 testFT01 - This method will ensure the correct indicators are returned from
 the read-only collection. There should be two returned.
@@ -134,9 +153,6 @@ func (s *Suite) testFT07(indicators []objects.Indicator) {
 	if s.Verbose {
 		s.Logger.Println("++ This test will filter the read-only collection by version using the last, first, and version")
 	}
-
-	path := s.APIRoot + "collections/" + s.ReadOnly + "/objects/"
-	s.setPath(path)
 
 	values := s.Req.URL.Query()
 	values.Set("match[version]", "last,first,2018-08-08T01:53:01.345Z")
@@ -248,21 +264,26 @@ func (s *Suite) testFilteringResponse(indicators []objects.Indicator) {
 							s.Logger.Println(v)
 						}
 					}
-					s.Logger.Println("-- Returned indicator", o.ID, "version", o.Modified, "does not match expected")
+					s.Logger.Println("-- ERROR: Returned indicator", o.ID, "version", o.Modified, "does not match expected")
+
 				} else {
 					if s.Debug {
 						for _, v := range details {
 							s.Logger.Println(v)
 						}
 					}
-					s.Logger.Println("++ Returned indicator", o.ID, "version", o.Modified, "matches expected")
+					if s.Verbose {
+						s.Logger.Println("++ Returned indicator", o.ID, "version", o.Modified, "matches expected")
+					}
 				}
 			}
 
 			count++
 		}
 
-		s.Logger.Println("++ Number objects returned:", count)
+		if s.Verbose {
+			s.Logger.Println("++ Number objects returned:", count)
+		}
 
 		if s.Debug {
 			data, _ := b.EncodeToString()

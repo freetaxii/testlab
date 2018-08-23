@@ -19,7 +19,6 @@ against the Read-Only Collection endpoint. It will also check to make sure the
 output from the GET request is correct and will echo the output to the logs.
 */
 func (s *Suite) TestROCollectionService() {
-	s.Logger.Println()
 	s.Logger.Println("== Testing Read-Only Collection Service")
 
 	path := s.APIRoot + "collections/" + s.ReadOnly + "/"
@@ -27,44 +26,13 @@ func (s *Suite) TestROCollectionService() {
 	s.EndpointType = "taxii"
 
 	s.basicEndpointTests()
-	s.getROCollectionOutput()
-}
 
-func (s *Suite) getROCollectionOutput() {
 	s.Logger.Println("== Test C2: Test successful response from read-only collection endpoint")
 	if s.Verbose {
 		s.Logger.Println("++ This test will check to see if a proper read-only collection resource is returned")
-		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
-
-	media := s.TAXIIMediaType + s.TAXIIVersion
-	s.setAccept(media)
-
-	ro := GenerateROCollection()
-	var o resources.Collection
-
-	s.Req.SetBasicAuth(s.Username, s.Password)
-	resp, err := s.Client.Do(s.Req)
-	s.handleError(err)
-	defer resp.Body.Close()
-	s.ProblemsFound += s.checkResponseCode(resp.StatusCode, 200)
-
-	body, err := ioutil.ReadAll(resp.Body)
-	s.handleError(err)
-
-	jerr := json.Unmarshal(body, &o)
-	s.handleError(jerr)
-
-	if valid := s.compareCollections(*ro, o); valid != true {
-		s.Logger.Println("ERROR: Returned collection does not match expected read-only collection")
-	}
-
-	var data []byte
-	data, _ = json.MarshalIndent(o, "", "    ")
-	s.Logger.Println("++ Collection Resource Returned:\n", string(data))
-
-	s.printSummary()
-	s.reset()
+	c := GenerateROCollection()
+	s.testCollectionResponse(c)
 }
 
 /*
@@ -73,7 +41,6 @@ against the Write-Only Collection endpoint. It will also check to make sure the
 output from the GET request is correct and will echo the output to the logs.
 */
 func (s *Suite) TestWOCollectionService() {
-	s.Logger.Println()
 	s.Logger.Println("== Testing Write-Only Collection Service")
 
 	path := s.APIRoot + "collections/" + s.WriteOnly + "/"
@@ -81,44 +48,13 @@ func (s *Suite) TestWOCollectionService() {
 	s.EndpointType = "taxii"
 
 	s.basicEndpointTests()
-	s.getWOCollectionOutput()
-}
 
-func (s *Suite) getWOCollectionOutput() {
 	s.Logger.Println("== Test C3: Test successful response from write-only collection endpoint")
 	if s.Verbose {
 		s.Logger.Println("++ This test will check to see if a proper write-only collection resource is returned")
-		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
-
-	media := s.TAXIIMediaType + s.TAXIIVersion
-	s.setAccept(media)
-
-	wo := GenerateWOCollection()
-	var o resources.Collection
-
-	s.Req.SetBasicAuth(s.Username, s.Password)
-	resp, err := s.Client.Do(s.Req)
-	s.handleError(err)
-	defer resp.Body.Close()
-	s.ProblemsFound += s.checkResponseCode(resp.StatusCode, 200)
-
-	body, err := ioutil.ReadAll(resp.Body)
-	s.handleError(err)
-
-	jerr := json.Unmarshal(body, &o)
-	s.handleError(jerr)
-
-	if valid := s.compareCollections(*wo, o); valid != true {
-		s.Logger.Println("ERROR: Returned collection does not match expected write-only collection")
-	}
-
-	var data []byte
-	data, _ = json.MarshalIndent(o, "", "    ")
-	s.Logger.Println("++ Collection Resource Returned:\n", string(data))
-
-	s.printSummary()
-	s.reset()
+	c := GenerateWOCollection()
+	s.testCollectionResponse(c)
 }
 
 /*
@@ -127,7 +63,6 @@ against the Read-Write Collection endpoint. It will also check to make sure the
 output from the GET request is correct and will echo the output to the logs.
 */
 func (s *Suite) TestRWCollectionService() {
-	s.Logger.Println()
 	s.Logger.Println("== Testing Read-Write Collection Service")
 
 	path := s.APIRoot + "collections/" + s.ReadWrite + "/"
@@ -135,21 +70,26 @@ func (s *Suite) TestRWCollectionService() {
 	s.EndpointType = "taxii"
 
 	s.basicEndpointTests()
-	s.getRWCollectionOutput()
-}
 
-func (s *Suite) getRWCollectionOutput() {
 	s.Logger.Println("== Test C4: Test successful response from read-write collection endpoint")
 	if s.Verbose {
 		s.Logger.Println("++ This test will check to see if a proper read-write collection resource is returned")
+	}
+	c := GenerateRWCollection()
+	s.testCollectionResponse(c)
+}
+
+/*
+testCollectionResponse - This method is used by other tests that will test
+to ensure that the correct objects are returned.
+*/
+func (s *Suite) testCollectionResponse(c *resources.Collection) {
+	if s.Verbose {
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
 
 	media := s.TAXIIMediaType + s.TAXIIVersion
 	s.setAccept(media)
-
-	rw := GenerateRWCollection()
-	var o resources.Collection
 
 	s.Req.SetBasicAuth(s.Username, s.Password)
 	resp, err := s.Client.Do(s.Req)
@@ -160,97 +100,36 @@ func (s *Suite) getRWCollectionOutput() {
 	body, err := ioutil.ReadAll(resp.Body)
 	s.handleError(err)
 
+	var o resources.Collection
 	jerr := json.Unmarshal(body, &o)
 	s.handleError(jerr)
 
-	if valid := s.compareCollections(*rw, o); valid != true {
-		s.Logger.Println("ERROR: Returned collection does not match expected read-write collection")
+	if valid, problems, details := c.Compare(&o); valid != true {
+		s.ProblemsFound += problems
+		if s.Debug {
+			for _, v := range details {
+				s.Logger.Println(v)
+			}
+		}
+		s.Logger.Println("-- ERROR: Returned collection", c.ID, "does not match expected")
+
+	} else {
+		if s.Debug {
+			for _, v := range details {
+				s.Logger.Println(v)
+			}
+		}
+		if s.Verbose {
+			s.Logger.Println("++ Returned collection", c.ID, "matches expected")
+		}
 	}
 
-	var data []byte
-	data, _ = json.MarshalIndent(o, "", "    ")
-	s.Logger.Println("++ Collection Resource Returned:\n", string(data))
+	if s.Debug {
+		var data []byte
+		data, _ = json.MarshalIndent(o, "", "    ")
+		s.Logger.Println("++ Collection Resource Returned:\n", string(data))
+	}
 
 	s.printSummary()
 	s.reset()
-}
-
-/*
-compareCollections - This method will compare two collections to make sure they
-are the same. Collection c1 represent the correct data, c2 represents what was
-retrieved from a server. So we need to make sure that c2 is the same as c1.
-*/
-func (s *Suite) compareCollections(c1, c2 resources.Collection) bool {
-
-	// Check ID Value
-	if c2.ID != c1.ID {
-		s.ProblemsFound++
-	} else {
-		if s.Verbose {
-			s.Logger.Println("++ IDs Match:", c1.ID, "|", c2.ID)
-		}
-	}
-
-	// Check Title Value
-	if c2.Title != c1.Title {
-		s.ProblemsFound++
-	} else {
-		if s.Verbose {
-			s.Logger.Println("++ Titles Match:", c1.Title, "|", c2.Title)
-		}
-	}
-
-	// Check Description Value
-	if c2.Description != c1.Description {
-		s.ProblemsFound++
-	} else {
-		if s.Verbose {
-			s.Logger.Println("++ Descriptions Match:", c1.Description, "|", c2.Description)
-		}
-	}
-
-	// Check Can Read Value
-	if c2.CanRead != c1.CanRead {
-		s.ProblemsFound++
-	} else {
-		if s.Verbose {
-			s.Logger.Println("++ Can Read Values Match:", c1.CanRead, "|", c2.CanRead)
-		}
-	}
-
-	// Check Can Write Value
-	if c2.CanWrite != c1.CanWrite {
-		s.ProblemsFound++
-	} else {
-		if s.Verbose {
-			s.Logger.Println("++ Can Write Values Match:", c1.CanWrite, "|", c2.CanWrite)
-		}
-	}
-
-	// Check Media Type Property Length
-	if len(c2.MediaTypes) != len(c1.MediaTypes) {
-		s.ProblemsFound++
-	} else {
-		if s.Verbose {
-			s.Logger.Println("++ Media Type Length Match:", len(c1.MediaTypes), "|", len(c2.MediaTypes))
-		}
-	}
-
-	// Check Media Type values
-	if c2.MediaTypes[0] != c1.MediaTypes[0] {
-		s.ProblemsFound++
-	} else {
-		if s.Verbose {
-			s.Logger.Println("++ Media Types Match:", c1.MediaTypes[0], "|", c2.MediaTypes[0])
-		}
-	}
-
-	if s.ProblemsFound > 0 {
-		s.Logger.Printf("ERROR: Returned collection does not match expected value")
-		s.Logger.Printf("ERROR: Expected %s", c1)
-		s.Logger.Printf("ERROR: Got %s", c2)
-		return false
-	}
-
-	return true
 }

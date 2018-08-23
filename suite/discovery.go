@@ -19,7 +19,6 @@ against the Discovery endpoint. It will also check to make sure the output
 from the GET request is correct and will echo the output to the logs.
 */
 func (s *Suite) TestDiscoveryService() {
-	s.Logger.Println()
 	s.Logger.Println("== Testing Discovery Service")
 
 	s.setPath(s.Discovery)

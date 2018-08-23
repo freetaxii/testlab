@@ -116,7 +116,7 @@ This test tool requires the following:
 3) The provided STIX data (data/indicators.json) will need to be loaded into 
 this read-only collection.
 4) It is important to note that the read-only collection MUST be empty before the
-indicators.stix file is imported and MUST not contain any other data.
+indicators.json file is imported and MUST not contain any other data.
 
 ### addContentTests.go ###
 This tool will perform various POST requests to the object
@@ -152,7 +152,7 @@ below.
 ```
 FreeTAXII TestLab - Basic Connectivity Tests
 Copyright: Bret Jordan
-Version: 0.3
+Version: 0.4
 
 Usage: basicTests [-a string] [-d string] [--help] [-n string] [--oldmediatype] [-p string] [-r string] [-u string] [--verbose] [--version] [-w string] [-x string] [-z string]
  -a, --apiroot=string    Name of API Root
@@ -168,7 +168,6 @@ Usage: basicTests [-a string] [-d string] [--help] [-n string] [--oldmediatype] 
  -w, --writeonly=string  The write-only collection ID
  -x, --proxy=string      Proxy Server Address
  -z, --readwrite=string  The read-write collection ID
-
 ```
 
 
@@ -184,6 +183,27 @@ Basic Endpoint Tests - These are run on every endpoint
 - [x] Invalid Media Types for Accept
 - [x] Valid Media Types for Accept
 - [x] Valid Media Type for Content-type
+
+Basic Objects Filtering Tests - These are run on every objects endpoint
+- [x] No filtering
+- [x] Version filtering using ALL
+- [x] Version filtering using FIRST
+- [x] Version filtering using LAST
+- [x] Version filtering using FIRST,LAST
+- [x] Version filtering using VERSION
+- [x] Version filtering using LAST,FIRST,VERSION
+- [x] ID filtering using single ID
+- [x] ID filtering using two IDs
+- [x] Type filtering using single Type
+
+Basic Object Filtering Tests - These are run on every object endpoint
+- [x] No filtering
+- [x] Version filtering using ALL
+- [x] Version filtering using FIRST
+- [x] Version filtering using LAST
+- [x] Version filtering using FIRST,LAST
+- [x] Version filtering using VERSION
+- [x] Version filtering using LAST,FIRST,VERSION
 
 Discovery Endpoint Tests
 - [x] All Basic Endpoint Tests
@@ -203,8 +223,13 @@ Collection Endpoint Tests
 
 Objects Endpoint Tests - RO Collection
 - [x] All Basic Endpoint Tests
+- [x] All Basic Objects Filtering Tests
 - [x] Verify Sort Order for two Indicators
-- [x] Successful GET each of two Indicators
+
+Object Endpoint Tests - RO Collection
+- [x] All Basic Endpoint Tests
+- [x] All Basic Objects Filtering Tests
+
 
 ## License ##
 

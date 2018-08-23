@@ -19,7 +19,6 @@ against the API Root endpoint. It will also check to make sure the output
 from the GET request is correct and will echo the output to the logs.
 */
 func (s *Suite) TestAPIRootService() {
-	s.Logger.Println()
 	s.Logger.Println("== Testing API Root Service")
 
 	s.setPath(s.APIRoot)

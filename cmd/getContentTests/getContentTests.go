@@ -56,13 +56,12 @@ func main() {
 	logger.Println("Starting FreeTAXII Testing Suite...")
 	logger.Println("------------------------------------------------------------")
 	s := suite.NewSuite(logger, wb)
-	// s.TestDiscoveryService()
-	// s.TestAPIRootService()
-	// s.TestCollectionsService()
-	// s.TestROCollectionService()
-	// s.TestWOCollectionService()
-	// s.TestRWCollectionService()
+	s.TestDiscoveryService()
+	s.TestAPIRootService()
+	s.TestCollectionsService()
+	s.TestROCollectionService()
 	s.TestObjectsServiceROCollection()
+	s.TestObjectServiceROCollection()
 }
 
 // --------------------------------------------------

@@ -16,7 +16,6 @@ against the Read-Only Objects endpoint. It will also check to make sure the
 output from the GET request is correct and will echo the output to the logs.
 */
 func (s *Suite) TestObjectsServiceROCollection() {
-	s.Logger.Println()
 	s.Logger.Println("== Testing Objects Service Read-Only Collection")
 
 	path := s.APIRoot + "collections/" + s.ReadOnly + "/objects/"
@@ -25,6 +24,23 @@ func (s *Suite) TestObjectsServiceROCollection() {
 
 	s.basicEndpointTests()
 	s.basicFilteringTestsObjectsRO()
+}
+
+/*
+TestObjectServiceROCollection - This method will perform all of the standard tests
+against the Read-Only Objects endpoint. It will also check to make sure the
+output from the GET request is correct and will echo the output to the logs.
+*/
+func (s *Suite) TestObjectServiceROCollection() {
+	s.Logger.Println("== Testing Object Service Read-Only Collection")
+
+	allIndicators := GenerateIndicatorData()
+	path := s.APIRoot + "collections/" + s.ReadOnly + "/objects/" + allIndicators[0].ID + "/"
+	s.setPath(path)
+	s.EndpointType = "stix"
+
+	s.basicEndpointTests()
+	s.basicFilteringTestsObjectRO()
 }
 
 /*
@@ -80,7 +96,7 @@ func (s *Suite) testSortOrder01() {
 
 			// Test sort order.
 			if o.ID != indicators[index].ID {
-				s.Logger.Println("ERROR: Sort order for returned data is wrong needs to be ascending")
+				s.Logger.Println("-- ERROR: Sort order for returned data is wrong needs to be ascending")
 				s.ProblemsFound++
 				continue
 			}
