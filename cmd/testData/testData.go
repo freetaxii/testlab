@@ -12,7 +12,7 @@ import (
 	"os"
 
 	"github.com/freetaxii/libstix2/datastore/sqlite3"
-	"github.com/freetaxii/libstix2/objects"
+	"github.com/freetaxii/libstix2/objects/bundle"
 	"github.com/freetaxii/libstix2/resources"
 	"github.com/freetaxii/testlab/suite"
 	"github.com/gologme/log"
@@ -40,7 +40,7 @@ var (
 func main() {
 	processCommandLineFlags()
 	var data []byte
-	var ds *sqlite3.Datastore
+	var ds *sqlite3.Store
 	var err error
 	database := *bOptDatabase
 	indicatorsOnly := *bOptIndicatorsOnly
@@ -131,7 +131,7 @@ func main() {
 	// Get manifests
 
 	fmt.Println("\n\nStart STIX Object Output")
-	b := objects.NewBundle()
+	b := bundle.New()
 	b.SetID("bundle--e5214f9b-ae28-4692-9394-2fd2ed85d78a")
 
 	counter := make(map[string]int)
@@ -142,8 +142,9 @@ func main() {
 		if database {
 			err = ds.AddObject(&v)
 			handleError(err)
-			// TODO need to first check to see if the STIX ID is already in the collection
-			// This should probably be done in the AddTAXIIObject
+			// First check to see if the STIX ID is already in the collection
+			// we do this by checking this local map that contains a counter
+			// since the collection should be new before running this command
 			if counter[v.ID] == 1 {
 				entry1 := resources.CreateCollectionRecord(c1.ID, v.ID)
 				err = ds.AddTAXIIObject(entry1)

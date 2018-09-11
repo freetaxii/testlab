@@ -7,13 +7,16 @@
 package suite
 
 import (
-	"github.com/freetaxii/libstix2/objects"
+	"github.com/freetaxii/libstix2/objects/attackpattern"
+	"github.com/freetaxii/libstix2/objects/campaign"
+	"github.com/freetaxii/libstix2/objects/indicator"
+	"github.com/freetaxii/libstix2/objects/threatactor"
 )
 
-func GenerateIndicatorData() []objects.Indicator {
-	var indicators []objects.Indicator
+func GenerateIndicatorData() []indicator.Indicator {
+	var indicators []indicator.Indicator
 
-	i1 := objects.NewIndicator()
+	i1 := indicator.New()
 	i1.SetID("indicator--1efc6673-9d95-46c3-a09c-c29f926da9af")
 	i1.SetCreated("2018-08-08T01:51:01.123Z")
 	i1.SetModified("2018-08-08T01:51:01.123Z")
@@ -35,7 +38,7 @@ func GenerateIndicatorData() []objects.Indicator {
 	i11.AddLabel("a")
 	indicators = append(indicators, *i11)
 
-	i12 := objects.NewIndicator()
+	i12 := indicator.New()
 	i12 = i11
 	i12.SetModified("2018-08-08T01:53:01.345Z")
 	i12.AddLabel("b")
@@ -54,7 +57,7 @@ func GenerateIndicatorData() []objects.Indicator {
 	i14.AddLabel("d")
 	indicators = append(indicators, *i14)
 
-	i2 := objects.NewIndicator()
+	i2 := indicator.New()
 	i2.SetID("indicator--213dea46-8750-4b8b-b988-aae8f86a62d6")
 	i2.SetCreated("2018-08-08T02:51:02.123Z")
 	i2.SetModified("2018-08-08T02:51:02.123Z")
@@ -80,10 +83,10 @@ func GenerateIndicatorData() []objects.Indicator {
 	return indicators
 }
 
-func GenerateAttackPatternData() []objects.AttackPattern {
-	var ap []objects.AttackPattern
+func GenerateAttackPatternData() []attackpattern.AttackPattern {
+	var ap []attackpattern.AttackPattern
 
-	a1 := objects.NewAttackPattern()
+	a1 := attackpattern.New()
 	a1.SetID("attack-pattern--9a624a80-ac52-49e2-b4ef-6b5e5f26a50d")
 	a1.SetCreated("2018-08-08T03:51:03.123Z")
 	a1.SetModified("2018-08-08T03:51:03.123Z")
@@ -98,10 +101,10 @@ func GenerateAttackPatternData() []objects.AttackPattern {
 	return ap
 }
 
-func GenerateThreatActorData() []objects.ThreatActor {
-	var ta []objects.ThreatActor
+func GenerateThreatActorData() []threatactor.ThreatActor {
+	var ta []threatactor.ThreatActor
 
-	t1 := objects.NewThreatActor()
+	t1 := threatactor.New()
 	t1.SetID("threat-actor--a6036137-f757-482e-bf63-fcb5e25efdd8")
 	t1.SetCreated("2018-08-08T04:51:04.123Z")
 	t1.SetModified("2018-08-08T04:51:04.123Z")
@@ -113,10 +116,10 @@ func GenerateThreatActorData() []objects.ThreatActor {
 	return ta
 }
 
-func GenerateCampaignData() []objects.Campaign {
-	var c []objects.Campaign
+func GenerateCampaignData() []campaign.Campaign {
+	var c []campaign.Campaign
 
-	c1 := objects.NewCampaign()
+	c1 := campaign.New()
 	c1.SetID("campaign--bba8b6c6-fa62-4767-8303-58390db33a19")
 	c1.SetCreated("2018-08-08T05:51:05.123Z")
 	c1.SetModified("2018-08-08T05:51:05.123Z")

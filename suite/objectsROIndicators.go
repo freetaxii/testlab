@@ -7,7 +7,8 @@
 package suite
 
 import (
-	"github.com/freetaxii/libstix2/objects"
+	"github.com/freetaxii/libstix2/objects/bundle"
+	"github.com/freetaxii/libstix2/objects/indicator"
 )
 
 /*
@@ -63,7 +64,7 @@ func (s *Suite) testSortOrder01() {
 	defer resp.Body.Close()
 	s.ProblemsFound += s.checkResponseCode(resp.StatusCode, 200)
 
-	b, err := objects.DecodeBundle(resp.Body)
+	b, err := bundle.Decode(resp.Body)
 	if err != nil {
 		s.Logger.Println("-- ERROR: Invalid bundle returned", err)
 		s.ProblemsFound++
@@ -74,13 +75,13 @@ func (s *Suite) testSortOrder01() {
 
 	allIndicators := GenerateIndicatorData()
 	// This first test will only have 2 indicators
-	indicators := []objects.Indicator{allIndicators[4], allIndicators[5]}
+	indicators := []indicator.Indicator{allIndicators[4], allIndicators[5]}
 
 	for index, v := range b.Objects {
 
 		// Make a first pass to decode just the object type value. Once we have this
 		// value we can easily make a second pass and decode the rest of the object.
-		stixtype, err := objects.DecodeObjectType(v)
+		stixtype, err := bundle.DecodeObjectType(v)
 		if err != nil {
 			// We should probably log the error here
 			continue
@@ -88,7 +89,7 @@ func (s *Suite) testSortOrder01() {
 
 		switch stixtype {
 		case "indicator":
-			o, err := objects.DecodeIndicator(v)
+			o, err := indicator.Decode(v)
 			if err != nil {
 				// We should probably log the error here
 				continue
