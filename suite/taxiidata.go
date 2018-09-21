@@ -6,12 +6,10 @@
 
 package suite
 
-import (
-	"github.com/freetaxii/libstix2/resources"
-)
+import "github.com/freetaxii/libstix2/resources/collections"
 
-func GenerateROCollection() *resources.Collection {
-	c1 := resources.NewCollection()
+func GenerateROCollection() *collections.Collection {
+	c1 := collections.NewCollection()
 	c1.SetID("22f763c1-e478-4765-8635-e4c32db665ea")
 	c1.SetTitle("Read-Only TestLab Collection")
 	c1.SetDescription("This is a Read-Only collection for use with the FreeTAXII TestLab tool")
@@ -20,8 +18,8 @@ func GenerateROCollection() *resources.Collection {
 	return c1
 }
 
-func GenerateWOCollection() *resources.Collection {
-	c2 := resources.NewCollection()
+func GenerateWOCollection() *collections.Collection {
+	c2 := collections.NewCollection()
 	c2.SetID("4f7327e2-f5b4-4269-b6e0-3564d174ce69")
 	c2.SetTitle("Write-Only TestLab Collection")
 	c2.SetDescription("This is a Write-Only collection for use with the FreeTAXII TestLab tool")
@@ -30,8 +28,8 @@ func GenerateWOCollection() *resources.Collection {
 	return c2
 }
 
-func GenerateRWCollection() *resources.Collection {
-	c3 := resources.NewCollection()
+func GenerateRWCollection() *collections.Collection {
+	c3 := collections.NewCollection()
 	c3.SetID("8c49f14d-8ea3-4f03-ab28-19dbca973dde")
 	c3.SetTitle("Read-Write TestLab Collection")
 	c3.SetDescription("This is a Read-Write collection for use with the FreeTAXII TestLab tool")

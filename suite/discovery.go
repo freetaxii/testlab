@@ -10,7 +10,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 
-	"github.com/freetaxii/libstix2/resources"
+	"github.com/freetaxii/libstix2/resources/discovery"
 )
 
 /*
@@ -40,7 +40,7 @@ func (s *Suite) getDiscoveryOutput() {
 	media := s.TAXIIMediaType + s.TAXIIVersion
 	s.setAccept(media)
 
-	var o resources.Discovery
+	var o discovery.Discovery
 	s.Req.SetBasicAuth(s.Username, s.Password)
 	resp, err := s.Client.Do(s.Req)
 	s.handleError(err)

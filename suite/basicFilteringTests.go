@@ -236,7 +236,7 @@ func (s *Suite) testFilteringResponse(correctIndicators []indicator.Indicator) {
 	// Check HTTP response code first
 	s.ProblemsFound += s.checkResponseCode(resp.StatusCode, 200)
 
-	bundleFromResponse, err := bundle.Decode(resp.Body)
+	bundleFromResponse, err := bundle.DecodeRaw(resp.Body)
 	if err != nil {
 		s.Logger.Println("-- ERROR: Invalid bundle returned", err)
 		s.ProblemsFound++
@@ -260,7 +260,7 @@ func (s *Suite) testFilteringResponse(correctIndicators []indicator.Indicator) {
 
 			switch stixtype {
 			case "indicator":
-				o, err := indicator.Decode(v)
+				o, _, err := indicator.Decode(v)
 				if err != nil {
 					// We should probably log the error here
 					continue

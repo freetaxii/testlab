@@ -68,7 +68,7 @@ func (s *Suite) testSortOrder01() {
 	defer resp.Body.Close()
 	s.ProblemsFound += s.checkResponseCode(resp.StatusCode, 200)
 
-	b, err := bundle.Decode(resp.Body)
+	b, err := bundle.DecodeRaw(resp.Body)
 	if err != nil {
 		s.Logger.Println("-- ERROR: Invalid bundle returned", err)
 		s.ProblemsFound++
@@ -93,7 +93,7 @@ func (s *Suite) testSortOrder01() {
 
 		switch stixtype {
 		case "indicator":
-			o, err := indicator.Decode(v)
+			o, _, err := indicator.Decode(v)
 			if err != nil {
 				// We should probably log the error here
 				continue

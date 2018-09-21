@@ -10,7 +10,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 
-	"github.com/freetaxii/libstix2/resources"
+	"github.com/freetaxii/libstix2/resources/collections"
 )
 
 /*
@@ -41,7 +41,7 @@ func (s *Suite) getCollectionsOutput() {
 	media := s.TAXIIMediaType + s.TAXIIVersion
 	s.setAccept(media)
 
-	var o resources.Collections
+	var o collections.Collections
 	s.Req.SetBasicAuth(s.Username, s.Password)
 	resp, err := s.Client.Do(s.Req)
 	s.handleError(err)

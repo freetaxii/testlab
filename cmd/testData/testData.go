@@ -13,7 +13,7 @@ import (
 
 	"github.com/freetaxii/libstix2/datastore/sqlite3"
 	"github.com/freetaxii/libstix2/objects/bundle"
-	"github.com/freetaxii/libstix2/resources"
+	"github.com/freetaxii/libstix2/resources/collections"
 	"github.com/freetaxii/testlab/suite"
 	"github.com/gologme/log"
 	"github.com/pborman/getopt"
@@ -66,7 +66,7 @@ func main() {
 	// ----------------------------------------------------------------------
 	fmt.Println("\n\nStart TAXII Collections Output")
 
-	col := resources.NewCollections()
+	col := collections.New()
 
 	// Create ReadOnly Collection
 	c1 := suite.GenerateROCollection()
@@ -146,8 +146,7 @@ func main() {
 			// we do this by checking this local map that contains a counter
 			// since the collection should be new before running this command
 			if counter[v.ID] == 1 {
-				entry1 := resources.CreateCollectionRecord(c1.ID, v.ID)
-				err = ds.AddTAXIIObject(entry1)
+				err = ds.AddToCollection(c1.ID, v.ID)
 				handleError(err)
 			}
 		}
@@ -159,8 +158,7 @@ func main() {
 			b.AddObject(v)
 			if database {
 				ds.AddObject(v)
-				entry1 := resources.CreateCollectionRecord(c1.ID, v.ID)
-				err = ds.AddTAXIIObject(entry1)
+				err = ds.AddToCollection(c1.ID, v.ID)
 				handleError(err)
 			}
 		}
@@ -170,8 +168,7 @@ func main() {
 			b.AddObject(v)
 			if database {
 				ds.AddObject(v)
-				entry1 := resources.CreateCollectionRecord(c1.ID, v.ID)
-				err = ds.AddTAXIIObject(entry1)
+				err = ds.AddToCollection(c1.ID, v.ID)
 				handleError(err)
 			}
 		}
@@ -181,8 +178,7 @@ func main() {
 			b.AddObject(v)
 			if database {
 				ds.AddObject(v)
-				entry1 := resources.CreateCollectionRecord(c1.ID, v.ID)
-				err = ds.AddTAXIIObject(entry1)
+				err = ds.AddToCollection(c1.ID, v.ID)
 				handleError(err)
 			}
 		}

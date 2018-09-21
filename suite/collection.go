@@ -10,7 +10,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 
-	"github.com/freetaxii/libstix2/resources"
+	"github.com/freetaxii/libstix2/resources/collections"
 )
 
 /*
@@ -85,7 +85,7 @@ func (s *Suite) TestRWCollectionService() {
 testCollectionResponse - This method is used by other tests that will test
 to ensure that the correct objects are returned.
 */
-func (s *Suite) testCollectionResponse(c *resources.Collection) {
+func (s *Suite) testCollectionResponse(c *collections.Collection) {
 	if s.Verbose {
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
@@ -102,7 +102,7 @@ func (s *Suite) testCollectionResponse(c *resources.Collection) {
 	body, err := ioutil.ReadAll(resp.Body)
 	s.handleError(err)
 
-	var o resources.Collection
+	var o collections.Collection
 	jerr := json.Unmarshal(body, &o)
 	s.handleError(jerr)
 
