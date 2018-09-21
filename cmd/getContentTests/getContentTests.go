@@ -52,9 +52,9 @@ func main() {
 	wb := suite.NewWorkbench()
 	processCommandLineFlags(wb)
 
-	logger.Println("------------------------------------------------------------")
-	logger.Println("Starting FreeTAXII Testing Suite...")
-	logger.Println("------------------------------------------------------------")
+	logger.Println("## ---------------------------------------------------------")
+	logger.Println("## Starting FreeTAXII Testing Suite...")
+	logger.Println("## ---------------------------------------------------------\n")
 	s := suite.NewSuite(logger, wb)
 	s.TestDiscoveryService()
 	s.TestAPIRootService()

@@ -17,14 +17,16 @@ against the Read-Only Objects endpoint. It will also check to make sure the
 output from the GET request is correct and will echo the output to the logs.
 */
 func (s *Suite) TestObjectsServiceROCollection() {
-	s.Logger.Println("== Testing Objects Service Read-Only Collection")
+	s.Logger.Println("## ---------------------------------------------------------")
+	s.Logger.Println("## Testing Objects Service Read-Only Collection")
+	s.Logger.Println("## ---------------------------------------------------------")
 
 	path := s.APIRoot + "collections/" + s.ReadOnly + "/objects/"
 	s.setPath(path)
 	s.EndpointType = "stix"
 
 	s.basicEndpointTests()
-	s.basicFilteringTestsObjectsRO()
+	s.basicIndicatorFilteringTestsObjectsRO()
 }
 
 /*
@@ -33,7 +35,9 @@ against the Read-Only Objects endpoint. It will also check to make sure the
 output from the GET request is correct and will echo the output to the logs.
 */
 func (s *Suite) TestObjectServiceROCollection() {
-	s.Logger.Println("== Testing Object Service Read-Only Collection")
+	s.Logger.Println("## ---------------------------------------------------------")
+	s.Logger.Println("## Testing Object Service Object By ID Read-Only Collection")
+	s.Logger.Println("## ---------------------------------------------------------")
 
 	allIndicators := GenerateIndicatorData()
 	path := s.APIRoot + "collections/" + s.ReadOnly + "/objects/" + allIndicators[0].ID + "/"
@@ -41,7 +45,7 @@ func (s *Suite) TestObjectServiceROCollection() {
 	s.EndpointType = "stix"
 
 	s.basicEndpointTests()
-	s.basicFilteringTestsObjectRO()
+	s.basicIndicatorFilteringTestsObjectRO()
 }
 
 /*
@@ -49,7 +53,7 @@ testSortOrder01 - This method will get all indicators from the read-only
 collection and make sure they are all correct.
 */
 func (s *Suite) testSortOrder01() {
-	s.Logger.Println("== Test SO-01: Test Sort Order")
+	s.Logger.Println("## Test SO-01: Test Sort Order")
 	if s.Verbose {
 		s.Logger.Println("++ This test will check to see if the sort order is correct for indicators returned from the read-only collection")
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)

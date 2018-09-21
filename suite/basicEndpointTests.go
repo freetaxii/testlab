@@ -11,6 +11,8 @@ import (
 )
 
 func (s *Suite) basicEndpointTests() {
+	s.Logger.Println("## Start Basic Endpoint Tests\n")
+
 	// Test no authentication
 	// Test failed authentication
 	// Test successful authentication
@@ -28,7 +30,7 @@ func (s *Suite) basicEndpointTests() {
 }
 
 func (s *Suite) testBE01() {
-	s.Logger.Println("== Test BE-01: No authentication test")
+	s.Logger.Println("## Test BE-01: No authentication test")
 	if s.Verbose {
 		s.Logger.Println("++ This test will send an empty authentication parameter and will check to see if a 401 or 404 status code is returned")
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
@@ -51,7 +53,7 @@ func (s *Suite) testBE01() {
 }
 
 func (s *Suite) testBE02() {
-	s.Logger.Println("== Test BE-02: Wrong authentication test")
+	s.Logger.Println("## Test BE-02: Wrong authentication test")
 	if s.Verbose {
 		s.Logger.Println("++ This test will send an incorrect authentication parameter and will check to see if a 401 or 404 status code is returned")
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
@@ -76,7 +78,7 @@ func (s *Suite) testBE02() {
 }
 
 func (s *Suite) testBE03() {
-	s.Logger.Println("== Test BE-03: Test successful authentication")
+	s.Logger.Println("## Test BE-03: Test successful authentication")
 	if s.Verbose {
 		s.Logger.Println("++ This test will send a correct authentication parameter and will check to see if a 200 status code is returned")
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
@@ -101,7 +103,7 @@ func (s *Suite) testBE03() {
 }
 
 func (s *Suite) testBE04() {
-	s.Logger.Println("== Test BE-04: Test missing trailing slash")
+	s.Logger.Println("## Test BE-04: Test missing trailing slash")
 	if s.Verbose {
 		s.Logger.Println("++ This test will request a URL with a missing trailing slash and check to see if a 404 status code is returned")
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
@@ -134,7 +136,7 @@ func (s *Suite) testBE04() {
 }
 
 func (s *Suite) testBE05() {
-	s.Logger.Println("== Test BE-05: Test invalid media types in Accept")
+	s.Logger.Println("## Test BE-05: Test invalid media types in Accept")
 	if s.Verbose {
 		s.Logger.Println("++ This test will make a series of requests with invalid Accept media types and check to see if a 406 status code is returned")
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
@@ -158,7 +160,7 @@ func (s *Suite) testBE05() {
 }
 
 func (s *Suite) testBE06() {
-	s.Logger.Println("== Test BE-06: Test valid media types in Accept")
+	s.Logger.Println("## Test BE-06: Test valid media types in Accept")
 	if s.Verbose {
 		s.Logger.Println("++ This test will make a series of requests with valid Accept media types and check to see if a 200 status code is returned")
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
@@ -191,7 +193,7 @@ func (s *Suite) testBE06() {
 }
 
 func (s *Suite) testBE07() {
-	s.Logger.Println("== Test BE-07: Test valid media type in Content-type")
+	s.Logger.Println("## Test BE-07: Test valid media type in Content-type")
 	if s.Verbose {
 		s.Logger.Println("++ This test will make a series of requests with valid Accept media types and check to see if the correct media type is returned")
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)

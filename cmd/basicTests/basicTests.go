@@ -37,6 +37,7 @@ var (
 	sOptPassword     = getopt.StringLong("password", 'p', "", "Password", "string")
 	bOptOldMediaType = getopt.BoolLong("oldmediatype", 0, "Use 2.0 media types")
 	bOptVerbose      = getopt.BoolLong("verbose", 0, "Enable verbose output")
+	bOptDebug        = getopt.BoolLong("debug", 0, "Enable debug output")
 	bOptHelp         = getopt.BoolLong("help", 0, "Help")
 	bOptVer          = getopt.BoolLong("version", 0, "Version")
 )
@@ -51,9 +52,9 @@ func main() {
 	wb := suite.NewWorkbench()
 	processCommandLineFlags(wb)
 
-	logger.Println("------------------------------------------------------------")
-	logger.Println("Starting FreeTAXII Testing Suite...")
-	logger.Println("------------------------------------------------------------")
+	logger.Println("## ---------------------------------------------------------")
+	logger.Println("## Starting FreeTAXII Testing Suite...")
+	logger.Println("## ---------------------------------------------------------\n")
 	s := suite.NewSuite(logger, wb)
 	s.TestDiscoveryService()
 	s.TestAPIRootService()
@@ -97,6 +98,7 @@ func processCommandLineFlags(wb *suite.Workbench) {
 	wb.Username = *sOptUsername
 	wb.Password = *sOptPassword
 	wb.Verbose = *bOptVerbose
+	wb.Debug = *bOptDebug
 	wb.OldMediaType = *bOptOldMediaType
 	wb.ReadOnly = *sOptReadOnly
 	wb.WriteOnly = *sOptWriteOnly

@@ -19,7 +19,9 @@ against the Read-Only Collection endpoint. It will also check to make sure the
 output from the GET request is correct and will echo the output to the logs.
 */
 func (s *Suite) TestROCollectionService() {
-	s.Logger.Println("== Testing Read-Only Collection Service")
+	s.Logger.Println("## ---------------------------------------------------------")
+	s.Logger.Println("## Testing Read-Only Collection Service")
+	s.Logger.Println("## ---------------------------------------------------------")
 
 	path := s.APIRoot + "collections/" + s.ReadOnly + "/"
 	s.setPath(path)
@@ -41,7 +43,7 @@ against the Write-Only Collection endpoint. It will also check to make sure the
 output from the GET request is correct and will echo the output to the logs.
 */
 func (s *Suite) TestWOCollectionService() {
-	s.Logger.Println("== Testing Write-Only Collection Service")
+	s.Logger.Println("## Testing Write-Only Collection Service")
 
 	path := s.APIRoot + "collections/" + s.WriteOnly + "/"
 	s.setPath(path)
@@ -63,7 +65,7 @@ against the Read-Write Collection endpoint. It will also check to make sure the
 output from the GET request is correct and will echo the output to the logs.
 */
 func (s *Suite) TestRWCollectionService() {
-	s.Logger.Println("== Testing Read-Write Collection Service")
+	s.Logger.Println("## Testing Read-Write Collection Service")
 
 	path := s.APIRoot + "collections/" + s.ReadWrite + "/"
 	s.setPath(path)

@@ -19,7 +19,9 @@ against the Collections endpoint. It will also check to make sure the output
 from the GET request is correct and will echo the output to the logs.
 */
 func (s *Suite) TestCollectionsService() {
-	s.Logger.Println("== Testing Collections Service")
+	s.Logger.Println("## ---------------------------------------------------------")
+	s.Logger.Println("## Testing Collections Service")
+	s.Logger.Println("## ---------------------------------------------------------")
 
 	path := s.APIRoot + "collections/"
 	s.setPath(path)
@@ -30,7 +32,7 @@ func (s *Suite) TestCollectionsService() {
 }
 
 func (s *Suite) getCollectionsOutput() {
-	s.Logger.Println("== Test C1: Test successful response from collections endpoint")
+	s.Logger.Println("## Test C1: Test successful response from collections endpoint")
 	if s.Verbose {
 		s.Logger.Println("++ This test will check to see if a proper collections resource is returned")
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
