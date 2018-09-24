@@ -72,7 +72,7 @@ func (s *Suite) testSortOrder01() {
 	if err != nil {
 		s.Logger.Println("-- ERROR: Invalid bundle returned", err)
 		s.ProblemsFound++
-		s.printSummary()
+		s.printTestSummary()
 		s.reset()
 		return
 	}
@@ -107,6 +107,6 @@ func (s *Suite) testSortOrder01() {
 			}
 		}
 	}
-	s.printSummary()
+	s.printTestSummary()
 	s.reset()
 }

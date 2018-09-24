@@ -57,6 +57,6 @@ func (s *Suite) getAPIRootOutput() {
 	data, _ = json.MarshalIndent(o, "", "    ")
 	s.Logger.Println("++ API Root Resource Returned:\n", string(data))
 
-	s.printSummary()
+	s.printTestSummary()
 	s.reset()
 }

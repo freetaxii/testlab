@@ -48,7 +48,7 @@ func (s *Suite) testBE01() {
 	defer resp.Body.Close()
 	s.ProblemsFound += s.checkResponseCode(resp.StatusCode, 401, 404)
 
-	s.printSummary()
+	s.printTestSummary()
 	s.reset()
 }
 
@@ -73,7 +73,7 @@ func (s *Suite) testBE02() {
 	defer resp.Body.Close()
 	s.ProblemsFound += s.checkResponseCode(resp.StatusCode, 401, 404)
 
-	s.printSummary()
+	s.printTestSummary()
 	s.reset()
 }
 
@@ -98,7 +98,7 @@ func (s *Suite) testBE03() {
 	defer resp.Body.Close()
 	s.ProblemsFound += s.checkResponseCode(resp.StatusCode, 200)
 
-	s.printSummary()
+	s.printTestSummary()
 	s.reset()
 }
 
@@ -131,7 +131,7 @@ func (s *Suite) testBE04() {
 	// Set it back
 	s.Req.URL.Path = orig
 
-	s.printSummary()
+	s.printTestSummary()
 	s.reset()
 }
 
@@ -155,7 +155,7 @@ func (s *Suite) testBE05() {
 		s.resetHeader()
 	}
 
-	s.printSummary()
+	s.printTestSummary()
 	s.reset()
 }
 
@@ -188,7 +188,7 @@ func (s *Suite) testBE06() {
 		s.resetHeader()
 	}
 
-	s.printSummary()
+	s.printTestSummary()
 	s.reset()
 }
 
@@ -221,6 +221,6 @@ func (s *Suite) testBE07() {
 		s.resetHeader()
 	}
 
-	s.printSummary()
+	s.printTestSummary()
 	s.reset()
 }

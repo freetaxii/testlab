@@ -132,6 +132,6 @@ func (s *Suite) testCollectionResponse(c *collections.Collection) {
 		s.Logger.Println("++ Collection Resource Returned:\n", string(data))
 	}
 
-	s.printSummary()
+	s.printTestSummary()
 	s.reset()
 }

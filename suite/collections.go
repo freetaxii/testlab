@@ -58,6 +58,6 @@ func (s *Suite) getCollectionsOutput() {
 	data, _ = json.MarshalIndent(o, "", "    ")
 	s.Logger.Println("++ Collections Resource Returned:\n", string(data))
 
-	s.printSummary()
+	s.printTestSummary()
 	s.reset()
 }

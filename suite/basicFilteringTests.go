@@ -240,7 +240,7 @@ func (s *Suite) testFilteringResponse(correctIndicators []indicator.Indicator) {
 	if err != nil {
 		s.Logger.Println("-- ERROR: Invalid bundle returned", err)
 		s.ProblemsFound++
-		s.printSummary()
+		s.printTestSummary()
 		s.reset()
 		return
 	}
@@ -300,6 +300,6 @@ func (s *Suite) testFilteringResponse(correctIndicators []indicator.Indicator) {
 		}
 	}
 
-	s.printSummary()
+	s.printTestSummary()
 	s.reset()
 }

@@ -233,10 +233,10 @@ func (s *Suite) handleError(err error) {
 }
 
 /*
-printSummary - This function will print out a summary of the number of errors
+printTestSummary - This function will print out a summary of the number of errors
 found in a specific test.
 */
-func (s *Suite) printSummary() {
+func (s *Suite) printTestSummary() {
 	if s.ProblemsFound == 0 {
 		s.Logger.Println("== SUCCESS: This test completed successfully\n")
 	} else if s.ProblemsFound == 1 {
