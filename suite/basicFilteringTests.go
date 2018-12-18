@@ -66,6 +66,9 @@ func (s *Suite) testFilter01(indicators []indicator.Indicator) {
 	s.Logger.Println("## Test Filter-01: Test No Filtering")
 	s.Logger.Infoln("++ This test will not apply any filters to the read-only collection")
 
+	s.startTest()
+	s.setAccept(s.FullMediaType)
+	s.enableAuth(s.Settings.Username, s.Settings.Password)
 	s.testFilteringResponse(indicators)
 }
 
@@ -76,6 +79,10 @@ the read-only collection. There should be six returned.
 func (s *Suite) testFilter02(indicators []indicator.Indicator) {
 	s.Logger.Println("## Test Filter-02: Test Version Filtering Using All")
 	s.Logger.Infoln("++ This test will filter the read-only collection by versions using the all keyword")
+
+	s.startTest()
+	s.setAccept(s.FullMediaType)
+	s.enableAuth(s.Settings.Username, s.Settings.Password)
 
 	values := s.Req.URL.Query()
 	values.Set("match[version]", "all")
@@ -91,6 +98,10 @@ func (s *Suite) testFilter03(indicators []indicator.Indicator) {
 	s.Logger.Println("## Test Filter-03: Test Version Filtering Using First")
 	s.Logger.Infoln("++ This test will filter the read-only collection by versions using the first keyword")
 
+	s.startTest()
+	s.setAccept(s.FullMediaType)
+	s.enableAuth(s.Settings.Username, s.Settings.Password)
+
 	values := s.Req.URL.Query()
 	values.Set("match[version]", "first")
 	s.Req.URL.RawQuery = values.Encode()
@@ -104,6 +115,10 @@ the read-only collection. There should be two returned.
 func (s *Suite) testFilter04(indicators []indicator.Indicator) {
 	s.Logger.Println("## Test Filter-04: Test Version Filtering Using Last")
 	s.Logger.Infoln("++ This test will filter the read-only collection by versions using the last keyword")
+
+	s.startTest()
+	s.setAccept(s.FullMediaType)
+	s.enableAuth(s.Settings.Username, s.Settings.Password)
 
 	values := s.Req.URL.Query()
 	values.Set("match[version]", "last")
@@ -119,6 +134,10 @@ func (s *Suite) testFilter05(indicators []indicator.Indicator) {
 	s.Logger.Println("## Test Filter-05: Test Version Filtering Using First,Last")
 	s.Logger.Infoln("++ This test will filter the read-only collection by versions using the first and last keywords")
 
+	s.startTest()
+	s.setAccept(s.FullMediaType)
+	s.enableAuth(s.Settings.Username, s.Settings.Password)
+
 	values := s.Req.URL.Query()
 	values.Set("match[version]", "first,last")
 	s.Req.URL.RawQuery = values.Encode()
@@ -132,6 +151,10 @@ the read-only collection. There should be one returned.
 func (s *Suite) testFilter06(indicators []indicator.Indicator) {
 	s.Logger.Println("## Test Filter-06: Test Version Filtering Using Specific Version")
 	s.Logger.Infoln("++ This test will filter the read-only collection by version using the version 2018-08-08T01:52:01.234Z")
+
+	s.startTest()
+	s.setAccept(s.FullMediaType)
+	s.enableAuth(s.Settings.Username, s.Settings.Password)
 
 	values := s.Req.URL.Query()
 	values.Set("match[version]", "2018-08-08T01:52:01.234Z")
@@ -147,6 +170,10 @@ func (s *Suite) testFilter07(indicators []indicator.Indicator) {
 	s.Logger.Println("## Test Filter-07: Test Version Filtering Using Last,First,Version")
 	s.Logger.Infoln("++ This test will filter the read-only collection by version using the last, first, and version")
 
+	s.startTest()
+	s.setAccept(s.FullMediaType)
+	s.enableAuth(s.Settings.Username, s.Settings.Password)
+
 	values := s.Req.URL.Query()
 	values.Set("match[version]", "last,first,2018-08-08T01:53:01.345Z")
 	s.Req.URL.RawQuery = values.Encode()
@@ -160,6 +187,10 @@ are returned from the read-only collection. There should be four returned.
 func (s *Suite) testFilter08(indicators []indicator.Indicator) {
 	s.Logger.Println("## Test Filter-08: Test ID Filtering Using One ID")
 	s.Logger.Infoln("++ This test will filter the read-only collection by ID using a single STIX ID")
+
+	s.startTest()
+	s.setAccept(s.FullMediaType)
+	s.enableAuth(s.Settings.Username, s.Settings.Password)
 
 	values := s.Req.URL.Query()
 	values.Set("match[id]", "indicator--1efc6673-9d95-46c3-a09c-c29f926da9af")
@@ -175,6 +206,10 @@ func (s *Suite) testFilter09(indicators []indicator.Indicator) {
 	s.Logger.Println("## Test Filter-09: Test ID Filtering Using Two IDs")
 	s.Logger.Infoln("++ This test will filter the read-only collection by ID using two STIX IDs")
 
+	s.startTest()
+	s.setAccept(s.FullMediaType)
+	s.enableAuth(s.Settings.Username, s.Settings.Password)
+
 	values := s.Req.URL.Query()
 	values.Set("match[id]", "indicator--1efc6673-9d95-46c3-a09c-c29f926da9af,indicator--213dea46-8750-4b8b-b988-aae8f86a62d6")
 	s.Req.URL.RawQuery = values.Encode()
@@ -189,6 +224,10 @@ func (s *Suite) testFilter10(indicators []indicator.Indicator) {
 	s.Logger.Println("## Test Filter-10: Test Type Filtering Using Indicator")
 	s.Logger.Infoln("++ This test will filter the read-only collection by type using Indicator")
 
+	s.startTest()
+	s.setAccept(s.FullMediaType)
+	s.enableAuth(s.Settings.Username, s.Settings.Password)
+
 	values := s.Req.URL.Query()
 	values.Set("match[type]", "indicator")
 	s.Req.URL.RawQuery = values.Encode()
@@ -202,10 +241,6 @@ ensure that the correct objects are returned.
 func (s *Suite) testFilteringResponse(correctIndicators []indicator.Indicator) {
 	s.Logger.Infoln("++ Calling Path:", s.Req.URL.Path)
 	s.Logger.Infoln("++ Query Params:", s.makePrettyQueryParams())
-
-	s.startTest()
-	s.setAccept(s.FullMediaType)
-	s.enableAuth(s.Settings.Username, s.Settings.Password)
 
 	// Make HTTP Request
 	resp, err := s.Client.Do(s.Req)
@@ -248,7 +283,7 @@ func (s *Suite) testFilteringResponse(correctIndicators []indicator.Indicator) {
 					s.ProblemsFound += problems
 					if s.Debug {
 						for _, v := range details {
-							s.Logger.Println(v)
+							s.Logger.Debugln(v)
 						}
 					}
 					s.Logger.Println("-- ERROR: Returned indicator", o.ID, "version", o.Modified, "does not match expected")
@@ -256,7 +291,7 @@ func (s *Suite) testFilteringResponse(correctIndicators []indicator.Indicator) {
 				} else {
 					if s.Debug {
 						for _, v := range details {
-							s.Logger.Println(v)
+							s.Logger.Debugln(v)
 						}
 					}
 					s.Logger.Infoln("++ Returned indicator", o.ID, "version", o.Modified, "matches expected")
