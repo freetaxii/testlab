@@ -7,6 +7,7 @@
 package suite
 
 import (
+	"github.com/freetaxii/libstix2/objects"
 	"github.com/freetaxii/libstix2/objects/bundle"
 	"github.com/freetaxii/libstix2/objects/indicator"
 )
@@ -21,9 +22,8 @@ func (s *Suite) TestObjectsServiceROCollection() {
 	s.Logger.Println("## Testing Objects Service Read-Only Collection")
 	s.Logger.Println("## ---------------------------------------------------------")
 
-	path := s.APIRoot + "collections/" + s.ReadOnly + "/objects/"
+	path := s.Settings.APIRoot + "collections/" + s.CollectionIDs.ReadOnly + "/objects/"
 	s.setPath(path)
-	s.EndpointType = "stix"
 
 	s.basicEndpointTests()
 	s.basicIndicatorFilteringTestsObjectsRO()
@@ -40,9 +40,8 @@ func (s *Suite) TestObjectServiceROCollection() {
 	s.Logger.Println("## ---------------------------------------------------------")
 
 	allIndicators := GenerateIndicatorData()
-	path := s.APIRoot + "collections/" + s.ReadOnly + "/objects/" + allIndicators[0].ID + "/"
+	path := s.Settings.APIRoot + "collections/" + s.CollectionIDs.ReadOnly + "/objects/" + allIndicators[0].ID + "/"
 	s.setPath(path)
-	s.EndpointType = "stix"
 
 	s.basicEndpointTests()
 	s.basicIndicatorFilteringTestsObjectRO()
@@ -59,10 +58,10 @@ func (s *Suite) testSortOrder01() {
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
 
-	media := s.STIXMediaType + s.STIXVersion
-	s.setAccept(media)
+	s.startTest()
+	s.setAccept(s.FullMediaType)
+	s.enableAuth(s.Settings.Username, s.Settings.Password)
 
-	s.Req.SetBasicAuth(s.Username, s.Password)
 	resp, err := s.Client.Do(s.Req)
 	s.handleError(err)
 	defer resp.Body.Close()
@@ -73,7 +72,6 @@ func (s *Suite) testSortOrder01() {
 		s.Logger.Println("-- ERROR: Invalid bundle returned", err)
 		s.ProblemsFound++
 		s.printTestSummary()
-		s.reset()
 		return
 	}
 
@@ -85,7 +83,7 @@ func (s *Suite) testSortOrder01() {
 
 		// Make a first pass to decode just the object type value. Once we have this
 		// value we can easily make a second pass and decode the rest of the object.
-		stixtype, err := bundle.DecodeObjectType(v)
+		stixtype, err := objects.DecodeType(v)
 		if err != nil {
 			// We should probably log the error here
 			continue
@@ -108,5 +106,4 @@ func (s *Suite) testSortOrder01() {
 		}
 	}
 	s.printTestSummary()
-	s.reset()
 }

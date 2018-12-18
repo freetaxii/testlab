@@ -23,9 +23,8 @@ func (s *Suite) TestROCollectionService() {
 	s.Logger.Println("## Testing Read-Only Collection Service")
 	s.Logger.Println("## ---------------------------------------------------------")
 
-	path := s.APIRoot + "collections/" + s.ReadOnly + "/"
+	path := s.Settings.APIRoot + "collections/" + s.CollectionIDs.ReadOnly + "/"
 	s.setPath(path)
-	s.EndpointType = "taxii"
 
 	s.basicEndpointTests()
 
@@ -45,9 +44,8 @@ output from the GET request is correct and will echo the output to the logs.
 func (s *Suite) TestWOCollectionService() {
 	s.Logger.Println("## Testing Write-Only Collection Service")
 
-	path := s.APIRoot + "collections/" + s.WriteOnly + "/"
+	path := s.Settings.APIRoot + "collections/" + s.CollectionIDs.WriteOnly + "/"
 	s.setPath(path)
-	s.EndpointType = "taxii"
 
 	s.basicEndpointTests()
 
@@ -67,9 +65,8 @@ output from the GET request is correct and will echo the output to the logs.
 func (s *Suite) TestRWCollectionService() {
 	s.Logger.Println("## Testing Read-Write Collection Service")
 
-	path := s.APIRoot + "collections/" + s.ReadWrite + "/"
+	path := s.Settings.APIRoot + "collections/" + s.CollectionIDs.ReadWrite + "/"
 	s.setPath(path)
-	s.EndpointType = "taxii"
 
 	s.basicEndpointTests()
 
@@ -90,10 +87,10 @@ func (s *Suite) testCollectionResponse(c *collections.Collection) {
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
 
-	media := s.TAXIIMediaType + s.TAXIIVersion
-	s.setAccept(media)
+	s.startTest()
+	s.setAccept(s.FullMediaType)
+	s.enableAuth(s.Settings.Username, s.Settings.Password)
 
-	s.Req.SetBasicAuth(s.Username, s.Password)
 	resp, err := s.Client.Do(s.Req)
 	s.handleError(err)
 	defer resp.Body.Close()
@@ -133,5 +130,4 @@ func (s *Suite) testCollectionResponse(c *collections.Collection) {
 	}
 
 	s.printTestSummary()
-	s.reset()
 }

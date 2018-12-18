@@ -9,7 +9,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"strings"
 
 	"github.com/freetaxii/testlab/suite"
 	"github.com/gologme/log"
@@ -20,7 +19,7 @@ import (
 // populated by the Makefile and uses the Git Head hash as its identifier.
 // These variables are used in the console output for --version and --help.
 var (
-	Version = "0.4"
+	Version = "0.5"
 	Build   string
 )
 
@@ -47,15 +46,15 @@ func main() {
 	// Setup logger
 	// --------------------------------------------------
 	logger := log.New(os.Stderr, "", log.LstdFlags)
-	//logger.EnableLevel("debug")
 
-	wb := suite.NewWorkbench()
-	processCommandLineFlags(wb)
+	s := suite.New(logger)
+	processCommandLineFlags(s)
 
 	logger.Println("## ---------------------------------------------------------")
 	logger.Println("## Starting FreeTAXII Testing Suite...")
 	logger.Println("## ---------------------------------------------------------\n")
-	s := suite.NewSuite(logger, wb)
+
+	s.Setup()
 	s.TestDiscoveryService()
 	s.TestAPIRootService()
 	s.TestCollectionsService()
@@ -72,7 +71,7 @@ func main() {
 processCommandLineFlags - This function will process the command line flags
 and will print the version or help information as needed.
 */
-func processCommandLineFlags(wb *suite.Workbench) {
+func processCommandLineFlags(s *suite.Suite) {
 	getopt.HelpColumn = 35
 	getopt.DisplayWidth = 120
 	getopt.SetParameters("")
@@ -93,33 +92,22 @@ func processCommandLineFlags(wb *suite.Workbench) {
 		os.Exit(0)
 	}
 
-	// TODO Verify URL and element syntax
-	wb.URL = *sOptURL
-	wb.Proxy = *sOptProxy
-	wb.Discovery = *sOptDiscovery
-	wb.APIRoot = *sOptAPIRoot
-	wb.Username = *sOptUsername
-	wb.Password = *sOptPassword
-	wb.Verbose = *bOptVerbose
-	wb.Debug = *bOptDebug
-	wb.OldMediaType = *bOptOldMediaType
-	wb.ReadOnly = *sOptReadOnly
-	wb.WriteOnly = *sOptWriteOnly
-	wb.ReadWrite = *sOptReadWrite
+	// ------------------------------------------------------------
+	// Map command line parameters to struct values
+	// ------------------------------------------------------------
+	s.Verbose = *bOptVerbose
+	s.Debug = *bOptDebug
 
-	if !strings.HasPrefix(wb.Discovery, "/") {
-		wb.Discovery = "/" + wb.Discovery
-	}
-	if !strings.HasSuffix(wb.Discovery, "/") {
-		wb.Discovery = wb.Discovery + "/"
-	}
+	s.Settings.URL = *sOptURL
+	s.Settings.Proxy = *sOptProxy
+	s.Settings.Discovery = *sOptDiscovery
+	s.Settings.APIRoot = *sOptAPIRoot
+	s.Settings.Username = *sOptUsername
+	s.Settings.Password = *sOptPassword
 
-	if !strings.HasPrefix(wb.APIRoot, "/") {
-		wb.APIRoot = "/" + wb.APIRoot
-	}
-	if !strings.HasSuffix(wb.APIRoot, "/") {
-		wb.APIRoot = wb.APIRoot + "/"
-	}
+	s.CollectionIDs.ReadOnly = *sOptReadOnly
+	s.CollectionIDs.WriteOnly = *sOptWriteOnly
+	s.CollectionIDs.ReadWrite = *sOptReadWrite
 }
 
 /*

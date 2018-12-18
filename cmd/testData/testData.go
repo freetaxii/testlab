@@ -54,8 +54,10 @@ func main() {
 	logger.EnableLevel("debug")
 	logger.EnableLevel("trace")
 
+	colCache := make(map[string]collections.Collection)
+
 	if database {
-		ds = sqlite3.New(logger, *sOptDatabaseFilename)
+		ds = sqlite3.New(logger, *sOptDatabaseFilename, colCache)
 		defer ds.Close()
 	}
 

@@ -23,25 +23,22 @@ func (s *Suite) TestDiscoveryService() {
 	s.Logger.Println("## Testing Discovery Service")
 	s.Logger.Println("## ---------------------------------------------------------")
 
-	s.setPath(s.Discovery)
-	s.EndpointType = "taxii"
+	s.setPath(s.Settings.Discovery)
 
 	s.basicEndpointTests()
 	s.getDiscoveryOutput()
 }
 
 func (s *Suite) getDiscoveryOutput() {
-	s.Logger.Println("## Test D1: Test successful response from discovery endpoint")
-	if s.Verbose {
-		s.Logger.Println("++ This test will check to see if a proper discovery resource is returned")
-		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
-	}
+	s.Logger.Println("## Test D1: Test Discovery Endpoint")
+	s.Logger.Infoln("++ This test will check to see if a proper discovery resource is returned")
+	s.Logger.Infoln("++ Calling Path:", s.Req.URL.Path)
 
-	media := s.TAXIIMediaType + s.TAXIIVersion
-	s.setAccept(media)
+	s.startTest()
+	s.setAccept(s.FullMediaType)
+	s.enableAuth(s.Settings.Username, s.Settings.Password)
 
 	var o discovery.Discovery
-	s.Req.SetBasicAuth(s.Username, s.Password)
 	resp, err := s.Client.Do(s.Req)
 	s.handleError(err)
 	defer resp.Body.Close()
@@ -58,5 +55,4 @@ func (s *Suite) getDiscoveryOutput() {
 	s.Logger.Println("++ Discovery Resource Returned:\n", string(data))
 
 	s.printTestSummary()
-	s.reset()
 }

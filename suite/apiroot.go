@@ -23,8 +23,7 @@ func (s *Suite) TestAPIRootService() {
 	s.Logger.Println("## Testing API Root Service")
 	s.Logger.Println("## ---------------------------------------------------------")
 
-	s.setPath(s.APIRoot)
-	s.EndpointType = "taxii"
+	s.setPath(s.Settings.APIRoot)
 
 	s.basicEndpointTests()
 	s.getAPIRootOutput()
@@ -37,11 +36,11 @@ func (s *Suite) getAPIRootOutput() {
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
 
-	media := s.TAXIIMediaType + s.TAXIIVersion
-	s.setAccept(media)
+	s.startTest()
+	s.setAccept(s.FullMediaType)
+	s.enableAuth(s.Settings.Username, s.Settings.Password)
 
 	var o apiroot.APIRoot
-	s.Req.SetBasicAuth(s.Username, s.Password)
 	resp, err := s.Client.Do(s.Req)
 	s.handleError(err)
 	defer resp.Body.Close()
@@ -58,5 +57,4 @@ func (s *Suite) getAPIRootOutput() {
 	s.Logger.Println("++ API Root Resource Returned:\n", string(data))
 
 	s.printTestSummary()
-	s.reset()
 }

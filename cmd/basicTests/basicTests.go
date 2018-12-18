@@ -9,7 +9,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"strings"
 
 	"github.com/freetaxii/testlab/suite"
 	"github.com/gologme/log"
@@ -20,26 +19,25 @@ import (
 // populated by the Makefile and uses the Git Head hash as its identifier.
 // These variables are used in the console output for --version and --help.
 var (
-	Version = "0.4"
+	Version = "0.5"
 	Build   string
 )
 
 // These global variables are for dealing with command line options
 var (
-	sOptURL          = getopt.StringLong("url", 'u', "https://127.0.0.1:8000/", "TAXII Server Address", "string")
-	sOptProxy        = getopt.StringLong("proxy", 'x', "", "Proxy Server Address", "string")
-	sOptDiscovery    = getopt.StringLong("discovery", 'd', "taxii2", "Name of Discovery Service", "string")
-	sOptAPIRoot      = getopt.StringLong("apiroot", 'a', "api1", "Name of API Root", "string")
-	sOptReadOnly     = getopt.StringLong("readonly", 'r', "22f763c1-e478-4765-8635-e4c32db665ea", "The read-only collection ID", "string")
-	sOptWriteOnly    = getopt.StringLong("writeonly", 'w', "4f7327e2-f5b4-4269-b6e0-3564d174ce69", "The write-only collection ID", "string")
-	sOptReadWrite    = getopt.StringLong("readwrite", 'z', "8c49f14d-8ea3-4f03-ab28-19dbca973dde", "The read-write collection ID", "string")
-	sOptUsername     = getopt.StringLong("username", 'n', "", "Username", "string")
-	sOptPassword     = getopt.StringLong("password", 'p', "", "Password", "string")
-	bOptOldMediaType = getopt.BoolLong("oldmediatype", 0, "Use 2.0 media types")
-	bOptVerbose      = getopt.BoolLong("verbose", 0, "Enable verbose output")
-	bOptDebug        = getopt.BoolLong("debug", 0, "Enable debug output")
-	bOptHelp         = getopt.BoolLong("help", 0, "Help")
-	bOptVer          = getopt.BoolLong("version", 0, "Version")
+	sOptURL       = getopt.StringLong("url", 'u', "https://127.0.0.1:8000/", "TAXII Server Address", "string")
+	sOptProxy     = getopt.StringLong("proxy", 'x', "", "Proxy Server Address", "string")
+	sOptDiscovery = getopt.StringLong("discovery", 'd', "taxii2", "Name of Discovery Service", "string")
+	sOptAPIRoot   = getopt.StringLong("apiroot", 'a', "api1", "Name of API Root", "string")
+	sOptReadOnly  = getopt.StringLong("readonly", 'r', "22f763c1-e478-4765-8635-e4c32db665ea", "The read-only collection ID", "string")
+	sOptWriteOnly = getopt.StringLong("writeonly", 'w', "4f7327e2-f5b4-4269-b6e0-3564d174ce69", "The write-only collection ID", "string")
+	sOptReadWrite = getopt.StringLong("readwrite", 'z', "8c49f14d-8ea3-4f03-ab28-19dbca973dde", "The read-write collection ID", "string")
+	sOptUsername  = getopt.StringLong("username", 'n', "", "Username", "string")
+	sOptPassword  = getopt.StringLong("password", 'p', "", "Password", "string")
+	bOptVerbose   = getopt.BoolLong("verbose", 0, "Enable verbose output")
+	bOptDebug     = getopt.BoolLong("debug", 0, "Enable debug output")
+	bOptHelp      = getopt.BoolLong("help", 0, "Help")
+	bOptVer       = getopt.BoolLong("version", 0, "Version")
 )
 
 func main() {
@@ -47,15 +45,15 @@ func main() {
 	// Setup logger
 	// --------------------------------------------------
 	logger := log.New(os.Stderr, "", log.LstdFlags)
-	//logger.EnableLevel("debug")
 
-	wb := suite.NewWorkbench()
-	processCommandLineFlags(wb)
+	s := suite.New(logger)
+	processCommandLineFlags(s)
 
 	logger.Println("## ---------------------------------------------------------")
 	logger.Println("## Starting FreeTAXII Testing Suite...")
 	logger.Println("## ---------------------------------------------------------\n")
-	s := suite.NewSuite(logger, wb)
+
+	s.Setup()
 	s.TestDiscoveryService()
 	s.TestAPIRootService()
 	s.TestCollectionsService()
@@ -69,14 +67,14 @@ func main() {
 processCommandLineFlags - This function will process the command line flags
 and will print the version or help information as needed.
 */
-func processCommandLineFlags(wb *suite.Workbench) {
+func processCommandLineFlags(s *suite.Suite) {
 	getopt.HelpColumn = 35
 	getopt.DisplayWidth = 120
 	getopt.SetParameters("")
 	getopt.Parse()
 
 	// Lets check to see if the version command line flag was given. If it is
-	// lets print out the version infomration and exit.
+	// lets print out the version information and exit.
 	if *bOptVer {
 		printOutputHeader()
 		os.Exit(0)
@@ -90,33 +88,22 @@ func processCommandLineFlags(wb *suite.Workbench) {
 		os.Exit(0)
 	}
 
-	// TODO Verify URL and element syntax
-	wb.URL = *sOptURL
-	wb.Proxy = *sOptProxy
-	wb.Discovery = *sOptDiscovery
-	wb.APIRoot = *sOptAPIRoot
-	wb.Username = *sOptUsername
-	wb.Password = *sOptPassword
-	wb.Verbose = *bOptVerbose
-	wb.Debug = *bOptDebug
-	wb.OldMediaType = *bOptOldMediaType
-	wb.ReadOnly = *sOptReadOnly
-	wb.WriteOnly = *sOptWriteOnly
-	wb.ReadWrite = *sOptReadWrite
+	// ------------------------------------------------------------
+	// Map command line parameters to struct values
+	// ------------------------------------------------------------
+	s.Verbose = *bOptVerbose
+	s.Debug = *bOptDebug
 
-	if !strings.HasPrefix(wb.Discovery, "/") {
-		wb.Discovery = "/" + wb.Discovery
-	}
-	if !strings.HasSuffix(wb.Discovery, "/") {
-		wb.Discovery = wb.Discovery + "/"
-	}
+	s.Settings.URL = *sOptURL
+	s.Settings.Proxy = *sOptProxy
+	s.Settings.Discovery = *sOptDiscovery
+	s.Settings.APIRoot = *sOptAPIRoot
+	s.Settings.Username = *sOptUsername
+	s.Settings.Password = *sOptPassword
 
-	if !strings.HasPrefix(wb.APIRoot, "/") {
-		wb.APIRoot = "/" + wb.APIRoot
-	}
-	if !strings.HasSuffix(wb.APIRoot, "/") {
-		wb.APIRoot = wb.APIRoot + "/"
-	}
+	s.CollectionIDs.ReadOnly = *sOptReadOnly
+	s.CollectionIDs.WriteOnly = *sOptWriteOnly
+	s.CollectionIDs.ReadWrite = *sOptReadWrite
 }
 
 /*

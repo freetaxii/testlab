@@ -23,9 +23,8 @@ func (s *Suite) TestCollectionsService() {
 	s.Logger.Println("## Testing Collections Service")
 	s.Logger.Println("## ---------------------------------------------------------")
 
-	path := s.APIRoot + "collections/"
+	path := s.Settings.APIRoot + "collections/"
 	s.setPath(path)
-	s.EndpointType = "taxii"
 
 	s.basicEndpointTests()
 	s.getCollectionsOutput()
@@ -38,11 +37,11 @@ func (s *Suite) getCollectionsOutput() {
 		s.Logger.Println("++ Calling Path:", s.Req.URL.Path)
 	}
 
-	media := s.TAXIIMediaType + s.TAXIIVersion
-	s.setAccept(media)
+	s.startTest()
+	s.setAccept(s.FullMediaType)
+	s.enableAuth(s.Settings.Username, s.Settings.Password)
 
 	var o collections.Collections
-	s.Req.SetBasicAuth(s.Username, s.Password)
 	resp, err := s.Client.Do(s.Req)
 	s.handleError(err)
 	defer resp.Body.Close()
@@ -59,5 +58,4 @@ func (s *Suite) getCollectionsOutput() {
 	s.Logger.Println("++ Collections Resource Returned:\n", string(data))
 
 	s.printTestSummary()
-	s.reset()
 }
