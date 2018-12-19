@@ -7,6 +7,9 @@ implementation with STIX 2.1+ content. It was written in the Go (Golang)
 programming language and as such each tool can be compiled into a standalone 
 statically compiled native executable. 
 
+## Version ##
+0.3.1
+
 ## Test Setup ##
 The three test tools listed below all require that an existing Discovery and 
 API Root be pre-configured on the TAXII Server. This API root will be used for 
