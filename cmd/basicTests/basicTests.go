@@ -19,7 +19,7 @@ import (
 // populated by the Makefile and uses the Git Head hash as its identifier.
 // These variables are used in the console output for --version and --help.
 var (
-	Version = "0.3.1"
+	Version = "0.5.1"
 	Build   string
 )
 

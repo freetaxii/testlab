@@ -8,7 +8,7 @@ programming language and as such each tool can be compiled into a standalone
 statically compiled native executable. 
 
 ## Version ##
-0.3.1
+0.5.1
 
 ## Test Setup ##
 The three test tools listed below all require that an existing Discovery and 
